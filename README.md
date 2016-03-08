@@ -1,2 +1,4 @@
-# Practicas-ROS
-Creado desde "El pesaor" :yum:
+## Practicas-ROS
+=====
+
+Prácticas de la asignatura Técnicas de los Sistemas Inteligentes (TSI)
