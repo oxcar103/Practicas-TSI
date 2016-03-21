@@ -2,11 +2,17 @@
 #include "geometry_msgs/Twist.h"
 #include <tf/transform_datatypes.h> //para transformar quaternions en ángulos, necesario en odomCallBack
 
+double signo(double valor){
+	if (valor > 0) return 1;
+	else if (valor < 0) return -1;
+	else return 0;
+}
+
 LocalPlanner::LocalPlanner()
 {
 
     CAMPOATT.radius = 0.01; CAMPOATT.spread = 3.5; CAMPOATT.intens = 0.05; //Parámetros de configuración (radio, spread, alpha) del campo actractivo.
-    CAMPOREP.radius = 0.02; CAMPOREP.spread = 1.0; CAMPOREP.intens = 0.01;//Parámetros de configuración (radio, spread, beta)del campo repulsivo.
+    CAMPOREP.radius = 0.35; CAMPOREP.spread = 0.7; CAMPOREP.intens = 0.01;//Parámetros de configuración (radio, spread, beta)del campo repulsivo.
     posGoal.x = posGoal.y = 0;  //Posición del objetivo
     pos.x = pos.y = 0;      //Posición actual
     yaw =0;     //Angulo (en radianes) de orientación del robot
@@ -62,7 +68,7 @@ void LocalPlanner::setDeltaAtractivo() {
         deltaGoal.x = deltaGoal.y = 0;
         return;
         }
-    if ( (CAMPOATT.radius < d) and (d < (CAMPOATT.spread - CAMPOATT.radius ))){
+    if ( (CAMPOATT.radius <= d) and (d <= (CAMPOATT.spread + CAMPOATT.radius ))){
         deltaGoal.x = CAMPOATT.intens *(d - CAMPOATT.radius)*cos(theta);
         deltaGoal.y = CAMPOATT.intens *(d - CAMPOATT.radius)*sin(theta);
         return;
@@ -78,12 +84,35 @@ void LocalPlanner::setDeltaAtractivo() {
 void LocalPlanner::getOneDeltaRepulsivo(Tupla posObst, Tupla &deltaO){
 // recibe una posición de un obstáculo y calcula el componente repulsivo para ese obstáculo.
 // Devuelve los valores en deltaO.x y deltaO.y
+    double d = distancia(posObst, pos);
+    double theta = atan2(posObst.y - pos.y, posObst.x - pos.x);
+    
+    if (d - CAMPOREP.radius < TOLERANCIA){
+        deltaO.x = -signo(cos(theta))*100;
+        deltaO.y = -signo(sin(theta))*100;
+        return;
+        }
+    if ( (CAMPOREP.radius <= d) and (d <= (CAMPOREP.spread + CAMPOREP.radius ))){
+        deltaO.x = -CAMPOREP.intens *(CAMPOREP.spread + CAMPOREP.radius - d)*cos(theta);
+        deltaO.y = -CAMPOREP.intens *(CAMPOREP.spread + CAMPOREP.radius - d)*sin(theta);
+        return;
+    }
+    if (d > (CAMPOREP.spread + CAMPOREP.radius)){
+        deltaO.x = deltaO.y = 0;
+        return;
+    }
 }
 
 void LocalPlanner::setTotalRepulsivo(){
 //Calcula la componente total repulsiva como suma de las componentes repulsivas para cada obstáculo.
-    deltaObst.x = deltaObst.y = 0;
-
+   deltaObst.x = deltaObst.y = 0;
+   Tupla deltaOactual;
+   
+   for(int i = 0; i < posObs.size(); i++){
+		getOneDeltaRepulsivo(posObs[i], deltaOactual);
+		deltaObst.x += deltaOactual.x;
+		deltaObst.y += deltaOactual.y;
+	}
 }
 
 void LocalPlanner::scanCallBack(const sensor_msgs::LaserScan::ConstPtr& scan)
@@ -137,7 +166,10 @@ void LocalPlanner::setv_Angular(){
 }
 void LocalPlanner::setv_Lineal(){
 //calcula la velocidad lineal
-    v_lineal =  sqrt(delta.x*delta.x + delta.y*delta.y);
+    if (signo(v_angular)*v_angular < 0.1)
+    	v_lineal =  sqrt(delta.x*delta.x + delta.y*delta.y);
+    else
+    	v_lineal = 0;
     }
 bool LocalPlanner::goalAchieved(){
 

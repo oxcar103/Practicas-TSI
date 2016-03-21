@@ -31,9 +31,15 @@ int main(int argc, char** argv) {
   goal.target_pose.header.frame_id = 	"map";
   goal.target_pose.header.stamp =	ros::Time::now();
 
-  goal.target_pose.pose.position.x =	-18.174;
-  goal.target_pose.pose.position.y =	25.876;
-  goal.target_pose.pose.orientation.w =	1;
+  ros::NodeHandle nh;
+  double x, y, theta;
+  nh.getParam("goal_x", x);
+  nh.getParam("goal_y", y);
+  nh.getParam("goal_theta", theta);
+
+  goal.target_pose.pose.position.x =	x;
+  goal.target_pose.pose.position.y =	y;
+  goal.target_pose.pose.orientation.w =	theta;
 
   ROS_INFO("Enviando el objetivo");
   ac.sendGoal(goal);
