@@ -1,6 +1,7 @@
 #include "myPlannerLite.h"
 #include "geometry_msgs/Twist.h"
 #include <tf/transform_datatypes.h> //para transformar quaternions en ángulos, necesario en odomCallBack
+#include <algorithm>
 
 double signo(double valor){
 	if (valor > 0) return 1;
@@ -69,8 +70,8 @@ void LocalPlanner::setDeltaAtractivo() {
         return;
         }
     if ( (CAMPOATT.radius <= d) and (d <= (CAMPOATT.spread + CAMPOATT.radius ))){
-        deltaGoal.x = CAMPOATT.intens *(d - CAMPOATT.radius)*cos(theta);
-        deltaGoal.y = CAMPOATT.intens *(d - CAMPOATT.radius)*sin(theta);
+        deltaGoal.x = CAMPOATT.intens *std::max(d - CAMPOATT.radius, 1.0)*cos(theta);
+        deltaGoal.y = CAMPOATT.intens *std::max(d - CAMPOATT.radius, 1.0)*sin(theta);
         return;
     }
     if (d > (CAMPOATT.spread + CAMPOATT.radius)){

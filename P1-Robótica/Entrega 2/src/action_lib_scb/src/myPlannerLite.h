@@ -1,5 +1,5 @@
-#ifndef LOCAL PLANNER_H
-#define LOCAL PLANNER_H
+#ifndef LOCAL_PLANNER_H
+#define LOCAL_PLANNER_H
 
 
 #include "ros/ros.h"
@@ -34,12 +34,12 @@ class LocalPlanner
 
         PFConf CAMPOATT;// = {0.01,3,5,0.07};//Parámetros de configuración (radio, spread, alpha) del campo actractivo.
         PFConf CAMPOREP;//(0,01,1,0,01);//Parámetros de configuración (radio, spread, beta)del campo repulsivo.
-        const static double TOLERANCIA = 0.009;  //Valor a partir del cual consideramos que el robot está e
+        const static double TOLERANCIA = 0.09;  //Valor a partir del cual consideramos que el robot está e
                               //en la posición objetivo (ver setDeltaAtractivo)
         const static double V_ANGULAR_CTE = M_PI/8;  //Valor de la velocidad angular constante.
         const static double EPSILON_ANGULAR = 0.0009; //Valor a partir del cual entendemos que el robot está en la orientación deseada
-        const static double MIN_SCAN_ANGLE_RAD = -30.0/180*M_PI;
-        const static double MAX_SCAN_ANGLE_RAD = +30.0/180*M_PI;
+        const static double MIN_SCAN_ANGLE_RAD = -135.0/180*M_PI;
+        const static double MAX_SCAN_ANGLE_RAD = +135.0/180*M_PI;
         LocalPlanner(); //constructor.
         void setGoal(const move_base_msgs::MoveBaseGoalConstPtr& goal) {
             posGoal.x = goal->target_pose.pose.position.x;

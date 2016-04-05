@@ -1,8 +1,20 @@
 <launch>
-  <param name="goal_x" value="-18.174" />
-  <param name="goal_y" value="25.876" />
-  <param name="goal_theta" value="1" />
-  <node name="stage" pkg="stage_ros" type="stageros" args="$(find stage_ros)/world/willow-erratic.world"/>
-  <node name="server_scb_node" pkg="action_lib_scb" type="server_scb_node"/>
-  <node name="client_scb_node" pkg="action_lib_scb" type="client_scb_node"/>
+  <master auto="start"/>
+    <param name="/use_sim_time" value="true"/>
+	<param name="goal_x" value="7" />
+	<param name="goal_y" value="0" />
+	<param name="goal_theta" value="1.0" />
+   <node name="map_server" pkg="map_server" type="map_server" args="$(find action_lib_scb)/maps/simple_rooms.yaml" respawn="false"/>
+	<node name="stage" pkg="stage_ros" type="stageros" args="$(find action_lib_scb)/maps/mi-simplerooms.world" respawn="false">
+		<param name="base_watchdog_timeout" value="0.2"/>
+	</node>
+	<node name="server_scb_node" pkg="action_lib_scb" type="server_scb_node"/>
+	<node name="client_scb_node" pkg="action_lib_scb" type="client_scb_node" output ="screen">
+          <rosparam file="$(find action_lib_scb)/configuration/costmap_common_params.yaml" command="load" ns="local_costmap" />
+          <rosparam file="$(find action_lib_scb)/configuration/local_costmap_params.yaml"  command="load" />
+          <rosparam file="$(find action_lib_scb)/configuration/costmap_common_params.yaml" command="load" ns="global_costmap" />
+          <rosparam file="$(find action_lib_scb)/configuration/global_costmap_params.yaml"  command="load" />
+	</node>
+	<node name="fake_localization" pkg="fake_localization" type="fake_localization" respawn="false" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find action_lib_scb)/single_robot.rviz" />
 </launch>

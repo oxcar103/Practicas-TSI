@@ -7,6 +7,7 @@
 #include <nav_msgs/Odometry.h> //lo pongo porque vamos a manejar tb. datos de odometría.
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/server/simple_action_server.h>
+#include <boost/thread.hpp>
 
 //Clase que contiene el action server
 class MyActionServer

@@ -14,6 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   tf
+  costmap_2d
+  visualization_msgs
 )
 
 find_package (Boost REQUIRED COMPONENTS thread)
