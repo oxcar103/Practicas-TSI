@@ -9,3 +9,5 @@ Para resolver el problema de que la velocidad tienda a 0 cuando se acerca al obj
 El resto de problemas lo resuelve lo de Iván.
 
 Esto son sólo las ideas para que no tengas que mirártelo todo. Ya lo pones bonico y lo organizas como veas.
+
+Por cierto, ponle que hemos ajustado los parámetros para que vaya suave; que eso siempre queda bien y vale como justificación de algunas cosas.
