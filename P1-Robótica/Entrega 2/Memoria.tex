@@ -109,14 +109,13 @@ Entrega 2: Navegación local} % Subtitle
 
 % Resumen (Descomentar para usarlo)
 \renewcommand{\abstractname}{Resumen} % Uncomment to change the name of the abstract to something else
-%\begin{abstract}
-% Resumen aquí
-%\end{abstract}
+\begin{abstract}
+	
+\end{abstract}
 
 % Palabras clave
 %\hspace*{3,6mm}\textit{Keywords:} lorem , ipsum , dolor , sit amet , lectus % Keywords
 %\vspace{30pt} % Some vertical space between the abstract and first section
-
 
 % Índice
 {\parskip=2pt
@@ -127,9 +126,49 @@ Entrega 2: Navegación local} % Subtitle
 %% Inicio del documento
 
 \section{Campos de potencial}
+	En la función \textbf{getOneDeltaRepulsivo}, hemos incorporado las fórmulas respectivas al cálculo
+	de campos de potencial vistas en clase para lograr que nuestro robot evita satisfactoriamente los
+	obstáculos que se hayan dispersos por el mapa. Hemos optado por utilizar un valor de 100  para
+	la fuerza atractiva como un valor lo suficientemente grande\footnote{Nótese que el máximo de dicha
+	fuerza es $\alpha \cdot s$, con $\alpha$ la intensidad del campo atractivo y $s$ su extensión.}.
+	
+	En función a ella, podemos completar la función \textbf{setTotalRepulsivo} de forma que calcule la
+	suma de las fuerzas repulsivas de los obstáculos detectados. Una vez implementado el campo de repulsivo,
+	lo usamos en el objeto \textit{planner} del servidor.
+	
+	Para alterar el campo de visión del escaneo láser de nuestro robot, modificamos los valores de las
+	constantes \textbf{MIN\_SCAN\_ANGLE\_RAD} y \textbf{MAX\_SCAN\_ANGLE\_RAD}. Inicialmente, aparecían
+	con un valor de \textit{-30.0/180*M\_PI} y \textit{+30.0/180*M\_PI} respectivamente, esto es, nos
+	otorgaban un ángulo de visión de 60º centrado en el frente.
+	
+	Como queremos que nuestro campo de visión se incremente hasta alcanzar los 270º, debemos modificarlos
+	por los valores de \textit{-135.0/180*M\_PI} para la constante \textbf{MIN\_SCAN\_ANGLE\_RAD} y de
+	\textit{+135.0/180*M\_PI} para la que se llama \textbf{MAX\_SCAN\_ANGLE\_RAD}.
+	
+	Aunque hemos optado por repartirlos de forma uniforme y que quede la visión centrada en el frente,
+	se podrían convertir estas constantes en variables para poder cambiar el centro de la visión en
+	determinados casos que pudiesen ser de interés, como por ejemplo, al tomar una curvatura para esquivar
+	un obstáculo.
 
+	Respecto a la corrección del exceso de tiempo que el robot se toma para detenerse al llegar a su
+	objetivo, nos basta con colocar un tope en la reducción de la fuerza atractiva en función de la
+	distancia a nuestro objetivo que consideraba inicialmente la fórmula utilizaba para la implementación
+	del cálculos de los campos potenciales. Así, obtenemos que cuando está lo suficientemente cerca de
+	lograr alcanzarlo, se mueve cada vez más despacio hasta que, finalmente, lo alcanza y se detiene.
+	
+	El robot presenta un comportamiento suicida al intentar evitar un obstáculo, por ejemplo, mediante
+	un giro. Esto se produce porque al realizar el cálculo del módulo de la fuerza obtiene un valor
+	excesivamente grande. Éste repercute en la velocidad incrementándola muchísimo. El resultado, que
+	el robot acaba estrellándose contra un muro a gran velocidad.
+	
+	Para corregir este comportamiento errático y nada deseable del robot debemos detectar un cambio en
+	la velocidad angular superior al normal y actuar en consecuencia frenando temporalmente, si fuese
+	necesario, la velocidad lineal permitiendo a nuestro dispositivo no tripulado disponer del tiempo
+	que necesita para realizar el giro en el que está inmerso de una manera satisfactoria.
+	
 \section{Escapar de mínimos locales}
 
 \section{Pruebas en distintos mapas}
+	
 
 \end{document}
