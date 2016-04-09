@@ -54,7 +54,7 @@
 
 
 %% Gráficos
-\usepackage{graphicx} % Required for including pictures
+\usepackage{graphics,graphicx, float, url} % Required for including pictures
 \usepackage{wrapfig} % Allows in-line images
 \usepackage[usenames,dvipsnames]{color} % Coloring code
 
@@ -166,9 +166,135 @@ Entrega 2: Navegación local} % Subtitle
 	necesario, la velocidad lineal permitiendo a nuestro dispositivo no tripulado disponer del tiempo
 	que necesita para realizar el giro en el que está inmerso de una manera satisfactoria.
 	
+	También hemos modificado algunos parámetros como la intensidad de los campos repulsivos y atractivos
+	para permitir que el giro se efectúe de una forma más suave. A pesar de haber solventado el
+	comportamiento suicida seguía chocando en algunos giros aunque de manera mucho menos drástica ya
+	que chocaba a poca velocidad, en pocos puntos y cuando estaba a punto de salvar la curva.
+
 \section{Escapar de mínimos locales}
 
+
 \section{Pruebas en distintos mapas}
+	Para corroborar el funcionamiento correcto de la máquina, hemos realizado las siguientes pruebas:
+
+	\subsection{simple-rooms.png}
+		En esta prueba, hemos empezado con lo valores:
+		
+		\begin{itemize}
+			\item \textbf{Posición inicial:} (-12,-10.9)
+			\item \textbf{Posición objetivo:} (-7.95,0.6)
+		\end{itemize}
+		
+		Que son los reflejados en la figura \ref{begin-sr}.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/simple-rooms-before.png}
+			\caption{Posición inicial del robot.}
+			\label{begin-sr}	
+		\end{figure}
+		
+		El robot ha avanzado hasta llegar una posición cercana la esquina de la puerta, ha frenado para
+		poder girar y bordearla de forma más suave (\ref{turn-b-sr}).
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/simple-rooms-turn-before.png}
+			\caption{Posición del robot antes del giro.}
+			\label{turn-b-sr}	
+		\end{figure}
+		
+		Ha continuado un poco hacia delante para evitar la pared. Después, ha vuelto a girar para digirse
+		hacia su objetivo (\ref{turn-a-sr}).
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/simple-rooms-turn-after.png}
+			\caption{Posición final del robot después del giro.}
+			\label{turn-a-sr}	
+		\end{figure}
+		
+		Finalmente, ha llegado a su objetivo (\ref{end-sr}) y ha aparecido el mensaje de éxito (\ref{res-sr}).
+
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/simple-rooms-after.png}
+			\caption{Posición final del robot.}
+			\label{end-sr}	
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/simple-rooms-result.png}
+			\caption{Resultados del robot.}
+			\label{res-sr}	
+		\end{figure}
 	
+
+	\subsection{Maze\_simple.png}
+		Los valores iniciales de este mapa fueron:
+		
+		\begin{itemize}
+			\item \textbf{Posición inicial:} (-2.2, -2.1)
+			\item \textbf{Posición objetivo:} (-0.3, -4.1)
+		\end{itemize}
+		
+		La figura \ref{begin-ms} nos muestra el estado inicial.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/maze-simple-before.png}
+			\caption{Posición inicial del robot.}
+			\label{begin-ms}	
+		\end{figure}
+		
+		Esta prueba, se ha decidido realizarla con un mapa tratado para poder ser usado por \textit{stage}
+		y por \textit{rviz}, y así comprobar la compatibilidad de este programa con diversas herramientas
+		y que no está limitado al uso de las mismas técnicas.
+
+		Como podemos ver gráficamente en \ref{end-ms} y por terminal en \ref{res-ms}, se consigue alcanzar
+		el objetivo.
+
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/maze-simple-after.png}
+			\caption{Posición final del robot.}
+			\label{end-ms}	
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/maze-simple-result.png}
+			\caption{Resultados del robot.}
+			\label{res-ms}	
+		\end{figure}
+		
+	
+	\subsection{autolab.png}
+		En este mapa, la configuración inicial fue:
+	
+		\begin{itemize}
+			\item \textbf{Posición inicial:} (-12, -12)
+			\item \textbf{Posición objetivo:} (-12, 12)
+		\end{itemize}
+		
+		Reflejada la figura \ref{begin-a}.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/autolab-before.png}
+			\caption{Posición inicial del robot.}
+			\label{begin-a}	
+		\end{figure}
+		
+		En esta prueba, se puede ver que cuando no hay obstáculos cerca el robot, simplemente, describe
+		una trayectoria en línea recta para acabar en \ref{end-a}.		
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Pruebas/autolab-after.png}
+			\caption{Posición final del robot.}
+			\label{end-a}	
+		\end{figure}
 
 \end{document}
