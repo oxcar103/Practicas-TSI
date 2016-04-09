@@ -62,6 +62,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{amsthm}
+\input{spanishAlgorithmic.tex}
 
 %% Matemáticas
 \usepackage{amsmath}
@@ -118,7 +119,7 @@ Entrega 2: Navegación local} % Subtitle
 	tratando de ir desde su posición inicial a otra posición que se le indicará inicialmente como
 	destino u objetivo.
 	
-	Para ello usaremos el cálculo del campo potencial que le rodea para desplazarse por el mapa evitando,
+	Para ello, usaremos el cálculo del campo potencial que le rodea para desplazarse por el mapa evitando,
 	chocar contra los diversos obstáculos que se pueda ir encontrando (paredes, cajas, \dots) a lo largo
 	de su camino antes de lograr llegar a su objetivo.
 
@@ -145,8 +146,8 @@ Entrega 2: Navegación local} % Subtitle
 
 \section{Campos de potencial}
 	En la función \textbf{getOneDeltaRepulsivo}, hemos incorporado las fórmulas respectivas al cálculo
-	de campos de potencial vistas en clase para lograr que nuestro robot evita satisfactoriamente los
-	obstáculos que se hayan dispersos por el mapa. Hemos optado por utilizar un valor de 100  para
+	de campos de potencial vistas en clase para lograr que nuestro robot evite satisfactoriamente los
+	obstáculos que se hallan dispersos por el mapa. Hemos optado por utilizar un valor de 100  para
 	la fuerza atractiva como un valor lo suficientemente grande\footnote{Nótese que el máximo de dicha
 	fuerza es $\alpha \cdot s$, con $\alpha$ la intensidad del campo atractivo y $s$ su extensión.}.
 	
@@ -155,9 +156,9 @@ Entrega 2: Navegación local} % Subtitle
 	lo usamos en el objeto \textit{planner} del servidor.
 	
 	Para alterar el campo de visión del escaneo láser de nuestro robot, modificamos los valores de las
-	constantes \textbf{MIN\_SCAN\_ANGLE\_RAD} y \textbf{MAX\_SCAN\_ANGLE\_RAD}. Inicialmente, aparecían
-	con un valor de \textit{-30.0/180*M\_PI} y \textit{+30.0/180*M\_PI} respectivamente, esto es, nos
-	otorgaban un ángulo de visión de 60º centrado en el frente.
+	constantes llamadas \textbf{MIN\_SCAN\_ANGLE\_RAD} y \textbf{MAX\_SCAN\_ANGLE\_RAD}. Inicialmente,
+	aparecían con un valor de \textit{-30.0/180*M\_PI} y \textit{+30.0/180*M\_PI} respectivamente, esto
+	es, nos otorgaban un ángulo de visión de 60º centrado en el frente.
 	
 	Como queremos que nuestro campo de visión se incremente hasta alcanzar los 270º, debemos modificarlos
 	por los valores de \textit{-135.0/180*M\_PI} para la constante \textbf{MIN\_SCAN\_ANGLE\_RAD} y de
@@ -219,7 +220,7 @@ Entrega 2: Navegación local} % Subtitle
 	
 	Por otra parte, utilizar sólo un \textit{costmap} local podría ocasionar que el robot permaneciese en
 	un bucle de acciones que le impidiesen llegar a su objetivo\footnote{Nótese que es justo el motivo
-	por el cuál hemos empezado a hacer uso de \textit{costmaps}}. Para ello, usaremos el \textit{costmap}
+	por el cuál hemos empezado a hacer uso de \textit{costmaps}.}. Para ello, usaremos el \textit{costmap}
 	global, para ver si, en un periodo de tiempo razonable, el robot permanece dentro de un radio adecuado
 	del mapa en el que estamos trabajando. Y con ello, dar pie a la búsqueda de una solución.
 		
@@ -237,7 +238,7 @@ Entrega 2: Navegación local} % Subtitle
 	     	\STATE{Inicializamos el Mejor Beneficio a 0}\\
 	     	\FORALL{Casilla en \texttt{costmap\_ros}}
 		  		\STATE{Calculamos su Beneficio}
-		  		\IF{Beneficios > Mejor Beneficio \AND la Casilla no es un obstáculo}
+		  		\IF{Beneficios > Mejor Beneficio \AND la Casilla no es obstáculo}
 					\STATE{Establecemos el valor de Mejor Beneficio como el valor de Beneficio}
 				\ENDIF
 			\ENDFOR
@@ -252,6 +253,10 @@ Entrega 2: Navegación local} % Subtitle
 	que revisan el camino seguido hasta el momento y la posición actual para determinar si, en un tiempo
 	oportunamente establecido se permanece dentro de un área de radio sabiamente elegido.
 	
+	La detección de la caída en mínimos locales, nos permite ejecutar la heurística para buscar un nuevo
+	objetivo que sustituya temporalmente a nuestro auténtico objetivo. El algoritmo \ref{Solve} refleja
+	este comportamiento:
+	
 	\begin{algorithm}[H]
 			\begin{algorithmic}[1]
 	
@@ -259,15 +264,15 @@ Entrega 2: Navegación local} % Subtitle
 					\texttt{Objetivo}\\
 					\texttt{Servidor}\\ \
 	
-		     	\STATE{Inicializamos Terminado y Bloqueado a \texttt{false}}\\
+		     	\STATE{Inicializamos Terminado y Bloqueado a \FALSE}\\
 		     	\STATE{Enviamos a nuestro Servidor el Objetivo}
 
 		     	\WHILE{\NOT Terminado}
 			  		\IF{Bloqueado}
 			  			\STATE{Informamos al Servidor para cancelar el Objetivo}
-			  			\STATE{Establecemos Bloqueado a \texttt{false}}\\
+			  			\STATE{Establecemos Bloqueado a \FALSE}\\
 			  			\STATE{Establecemos NuevoObjetivo al resultado de la Heurística}\\
-				     	\STATE{Inicializamos NuevoTerminado y NuevoBloqueado a \texttt{false}}\\
+				     	\STATE{Inicializamos NuevoTerminado y NuevoBloqueado a \FALSE}\\
 				     	\STATE{Enviamos a nuestro Servidor el NuevoObjetivo}
      			     	
      			     	\WHILE{\NOT NuevoTerminado}
@@ -283,8 +288,6 @@ Entrega 2: Navegación local} % Subtitle
 						\ENDIF     	
 					\ENDIF
 				\ENDWHILE
-					  		
-				\RETURN{resol}			
 			\end{algorithmic}
 			\caption{Ejecución principal del cliente}
 			\label{Solve}
