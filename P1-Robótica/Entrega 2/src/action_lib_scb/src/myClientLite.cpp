@@ -99,8 +99,8 @@ void feedbackCBGoal0(const move_base_msgs::MoveBaseFeedbackConstPtr &feedback){
 		y_ini=feedback->base_position.pose.position.y;
 		inicializado=true;
 	}else{
-		//float distancia=(x_ini-feedback->base_position.pose.position.x)*(x_ini-feedback->base_position.pose.position.x)+(y_ini-feedback->base_position.pose.position.y)*(y_ini-feedback->base_position.pose.position.y);
-		float distancia=(x-feedback->base_position.pose.position.x)*(x-feedback->base_position.pose.position.x)+(y-feedback->base_position.pose.position.y)*(y-feedback->base_position.pose.position.y);
+		float distancia=(x_ini-feedback->base_position.pose.position.x)*(x_ini-feedback->base_position.pose.position.x)+(y_ini-feedback->base_position.pose.position.y)*(y_ini-feedback->base_position.pose.position.y);
+
 		distancia=sqrt(distancia);
 		ROS_INFO_THROTTLE(1,"Distancia: %f",distancia);
 		

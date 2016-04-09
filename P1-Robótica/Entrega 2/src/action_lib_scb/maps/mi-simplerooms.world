@@ -68,7 +68,7 @@ floorplan
 )
 
 # throw in a robot
-pr2( pose [ 8.557 6.313 0.000 -127.719 ] name "pr2" color "blue")
+pr2( pose [ -12.000 -10.900 0.000 -127.719 ] name "pr2" color "blue")
 block( pose [ 7.000 1.000 0.000 0.000 ] color "red")
 block( pose [ -25.062 12.909 0.000 180.000 ] color "red")
 block( pose [ -25.062 12.909 0.000 180.000 ] color "red")

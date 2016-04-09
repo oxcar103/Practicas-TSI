@@ -1,11 +1,11 @@
 <launch>
   <master auto="start"/>
     <param name="/use_sim_time" value="true"/>
-	<param name="goal_x" value="7" />
-	<param name="goal_y" value="0" />
+	<param name="goal_x" value="-12.0" />
+	<param name="goal_y" value="12.0" />
 	<param name="goal_theta" value="1.0" />
-   <node name="map_server" pkg="map_server" type="map_server" args="$(find action_lib_scb)/maps/simple_rooms.yaml" respawn="false"/>
-	<node name="stage" pkg="stage_ros" type="stageros" args="$(find action_lib_scb)/maps/mi-simplerooms.world" respawn="false">
+   <node name="map_server" pkg="map_server" type="map_server" args="$(find action_lib_scb)/maps/autolab_simple.yaml" respawn="false"/>
+	<node name="stage" pkg="stage_ros" type="stageros" args="$(find action_lib_scb)/maps/autolab-simple.world" respawn="false">
 		<param name="base_watchdog_timeout" value="0.2"/>
 	</node>
 	<node name="server_scb_node" pkg="action_lib_scb" type="server_scb_node"/>
