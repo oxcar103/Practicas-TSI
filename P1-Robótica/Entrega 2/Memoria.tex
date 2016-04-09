@@ -58,6 +58,10 @@
 \usepackage{wrapfig} % Allows in-line images
 \usepackage[usenames,dvipsnames]{color} % Coloring code
 
+% Para algoritmos
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsthm}
 
 %% Matemáticas
 \usepackage{amsmath}
@@ -186,6 +190,105 @@ Entrega 2: Navegación local} % Subtitle
 	que chocaba a poca velocidad, en pocos puntos y cuando estaba a punto de salvar la curva.
 
 \section{Escapar de mínimos locales}
+	Debido a la posibilidad de que en algún momento dado, las fuerzas atractivas y repulsivas del campo
+	de potencial provoquen en el robot la entrada en un ciclo de movimientos, debemos plantearnos el
+	estudio de técnicas para escapar de óptimos locales, así como su posterior implementación.
+	
+	Para lograr escapar de mínimos locales, se optará por usar dos \textit{costmaps} ejecutados en el
+	cliente:
+	
+	\begin{itemize}
+		\item Un \textit{costmap} global, llamado \textbf{globalcostmap} que contendrá la información
+		del mapa completo.
+		\item Un \textit{costmap} local, llamado \textbf{localcostmap} que irá variando la información
+		que almacena según el robot se mueva por el mapa.
+	\end{itemize}
+	
+	Un detalle que debemos tener en cuenta a la hora de implementar dichos \textit{costmaps} es que,
+	a diferencia del resto de variables, como necesitan conectarse desde el cliente al servidor, requerirán
+	un tiempo inicial para estar activas, por lo que hemos optado por pausarlas hasta comprobar que,
+	efectivamente, nos hemos conectado al servidor.
+
+	El propósito de usar dos \textit{costmap} es el de llevar un equilibrio entre eficiencia computacional
+	y el de obtener buenos resultados.
+	
+	Esto es, si usáramos el mapa global para obtener en cada momento la mejor acción a realizar, aunque
+	efectivamente obtendríamos el mejor resultado posible, podría tardar muchísimo, dependiendo del mapa.
+	Por ello, el propósito de nuestro \textit{costmap} local es el de reducir dicho tiempo de cómputo de
+	la mejor acción a aplicar en cada momento en lo máximo posible.
+	
+	Por otra parte, utilizar sólo un \textit{costmap} local podría ocasionar que el robot permaneciese en
+	un bucle de acciones que le impidiesen llegar a su objetivo\footnote{Nótese que es justo el motivo
+	por el cuál hemos empezado a hacer uso de \textit{costmaps}}. Para ello, usaremos el \textit{costmap}
+	global, para ver si, en un periodo de tiempo razonable, el robot permanece dentro de un radio adecuado
+	del mapa en el que estamos trabajando. Y con ello, dar pie a la búsqueda de una solución.
+		
+	Para el buen funcionamiento del \textit{costmap} local, hemos implementado la heurística \ref{Heurística}:
+	
+	\begin{algorithm}[H]
+		\begin{algorithmic}[1]
+
+			\REQUIRE \ \\
+	        	\texttt{costmap\_ros}, el \textit{costmap} sobre el que trabajar\\
+	        	\texttt{height}, su altura\\
+	        	\texttt{width}, su anchura\\
+	        	\texttt{resol}, su solución\\ \
+
+	     	\STATE{Inicializamos el Mejor Beneficio a 0}\\
+	     	\FORALL{Casilla en \texttt{costmap\_ros}}
+		  		\STATE{Calculamos su Beneficio}
+		  		\IF{Beneficios > Mejor Beneficio \AND la Casilla no es un obstáculo}
+					\STATE{Establecemos el valor de Mejor Beneficio como el valor de Beneficio}
+				\ENDIF
+			\ENDFOR
+				  		
+			\RETURN{resol}			
+		\end{algorithmic}
+		\caption{Heurística de evaluación}
+		\label{Heurística}
+	\end{algorithm}
+
+	La decisión de si estamos ciclando en una región del mapa se toma mediante funciones de \textit{feedback}
+	que revisan el camino seguido hasta el momento y la posición actual para determinar si, en un tiempo
+	oportunamente establecido se permanece dentro de un área de radio sabiamente elegido.
+	
+	\begin{algorithm}[H]
+			\begin{algorithmic}[1]
+	
+				\REQUIRE \ \\
+					\texttt{Objetivo}\\
+					\texttt{Servidor}\\ \
+	
+		     	\STATE{Inicializamos Terminado y Bloqueado a \texttt{false}}\\
+		     	\STATE{Enviamos a nuestro Servidor el Objetivo}
+
+		     	\WHILE{\NOT Terminado}
+			  		\IF{Bloqueado}
+			  			\STATE{Informamos al Servidor para cancelar el Objetivo}
+			  			\STATE{Establecemos Bloqueado a \texttt{false}}\\
+			  			\STATE{Establecemos NuevoObjetivo al resultado de la Heurística}\\
+				     	\STATE{Inicializamos NuevoTerminado y NuevoBloqueado a \texttt{false}}\\
+				     	\STATE{Enviamos a nuestro Servidor el NuevoObjetivo}
+     			     	
+     			     	\WHILE{\NOT NuevoTerminado}
+     				  		\IF{NuevoBloqueado}
+     				  			\STATE{Informamos al Servidor para cancelar el NuevoObjetivo}
+     				  			\STATE{Esperamos por el resultado}
+     						\ENDIF
+     					\ENDWHILE
+
+						\IF{\NOT NuevoBloqueado}
+							\STATE{Restauramos el Objetivo}
+					     	\STATE{Enviamos a nuestro Servidor el Objetivo}
+						\ENDIF     	
+					\ENDIF
+				\ENDWHILE
+					  		
+				\RETURN{resol}			
+			\end{algorithmic}
+			\caption{Ejecución principal del cliente}
+			\label{Solve}
+		\end{algorithm}
 
 \section{Pruebas en distintos mapas}
 	Para corroborar el funcionamiento correcto de la máquina, hemos realizado las siguientes pruebas:
