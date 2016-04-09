@@ -46,6 +46,10 @@ qtcreator-*
 # Catkin custom files
 CATKIN_IGNORE
 
+# Configuration and temporal files
+*.yaml
+*.xml
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
