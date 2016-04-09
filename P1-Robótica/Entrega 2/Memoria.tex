@@ -110,6 +110,20 @@ Entrega 2: Navegación local} % Subtitle
 % Resumen (Descomentar para usarlo)
 \renewcommand{\abstractname}{Resumen} % Uncomment to change the name of the abstract to something else
 \begin{abstract}
+	En esta práctica, procederemos a implementar el comportamiento de un robot a través de un mapa
+	tratando de ir desde su posición inicial a otra posición que se le indicará inicialmente como
+	destino u objetivo.
+	
+	Para ello usaremos el cálculo del campo potencial que le rodea para desplazarse por el mapa evitando,
+	chocar contra los diversos obstáculos que se pueda ir encontrando (paredes, cajas, \dots) a lo largo
+	de su camino antes de lograr llegar a su objetivo.
+
+	Sin embargo, mediante la técnica de desplazamiento mediente campos de potencial puede quedar atrapado
+	en óptimo locales. Por ello, usaremos un par de \textit{costmaps} que le permitirán salir de éstos
+	cuando se halle inmerso.
+	
+	A modo de ejemplo, hemos incluido algunas pruebas sobre distintos mapas.
+	
 	
 \end{abstract}
 
@@ -172,7 +186,6 @@ Entrega 2: Navegación local} % Subtitle
 	que chocaba a poca velocidad, en pocos puntos y cuando estaba a punto de salvar la curva.
 
 \section{Escapar de mínimos locales}
-
 
 \section{Pruebas en distintos mapas}
 	Para corroborar el funcionamiento correcto de la máquina, hemos realizado las siguientes pruebas:
