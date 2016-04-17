@@ -131,8 +131,16 @@ Entrega 3: Navegación global} % Subtitle
 %% Inicio del documento
 
 \section{Implementación del algoritmo A*}
+	
 
 \section{Mejora del algoritmo A*}
+	Para mejorar el \textbf{algoritmo A*}, optamos por introducir la variación de peso mediante la
+	ponderación por la máxima distancia disponible en el mapa.
+	
+	Esto es, el peso de nuestra variación sería:
+	$$\omega = \frac{\texttt{distancia al objetivo}}{\texttt{distancia máxima del mapa}} \cdot 3 + 1$$
+%Lo que he hecho ha sido crear una variable maxdistance que contiene la mayor distancia posible
+%Y después con eso he calculado el peso que pone en el commit: [(distancia al goal)/(distancia máxima del mapa)]*3+1
 
 \section{Pruebas en distintos mapas}
 
