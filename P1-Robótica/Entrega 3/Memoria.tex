@@ -42,6 +42,8 @@
   \parskip=8pt
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
 
+% Enlaces
+\usepackage[hidelinks]{hyperref}
 
 %% Castellano.
 % noquoting: Permite uso de comillas no españolas.
@@ -64,7 +66,6 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{amsthm}
-%\input{spanishAlgorithmic.tex}
 
 %% Matemáticas
 \usepackage{amsmath}
@@ -117,7 +118,6 @@ Entrega 3: Navegación global} % Subtitle
 % Resumen (Descomentar para usarlo)
 \renewcommand{\abstractname}{Resumen} % Uncomment to change the name of the abstract to something else
 \begin{abstract}
-
 \end{abstract}
 
 % Palabras clave
@@ -133,7 +133,15 @@ Entrega 3: Navegación global} % Subtitle
 %% Inicio del documento
 
 \section{Implementación del algoritmo A*}
-	
+	Para la implementación del \textbf{algoritmo A*}, nos basamos en el material proporcionado en el
+	temario de teoría, así como en el \href{http://theory.stanford.edu/~amitp/GameProgramming/}
+	{\textit{material proporcionado}}.
+
+	Para ello, necesitaremos transformar el índice de celdas a coordenadas del mundo. Esta implementación,
+	la haremos tal y siguiendo las indicaciones que se nos proporcionan para la consecución de dicho fin
+	en la \href{http://docs.ros.org/indigo/api/costmap_2d/html/classcostmap__2d_1_1Costmap2D.html}
+	{\textit{documentación de ROS}}.
+		
 
 \section{Mejora del algoritmo A*}
 	Para mejorar el \textbf{algoritmo A*}, optamos por introducir la variación de peso mediante la
