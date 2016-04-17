@@ -42,8 +42,6 @@
 #include <sstream>
 #include <string>
 
-
-
 //register this planner as a BaseGlobalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(myastar_planner::MyastarPlanner, nav_core::BaseGlobalPlanner)
 
@@ -332,7 +330,7 @@ double MyastarPlanner::footprintCost(int x_i, int y_i, double x_real, double y_r
           //Para los nodos que ya están en abiertos, comprobar en cerrados su coste y actualizarlo si fuera necesario
 			//Añadimos a ABIERTOS las celdas que todavía no están en ABIERTO, marcando el nodo actual como su padre
          //ver la función addNeighborCellsToOpenList(openList, neighborsNotInOpenList, currentIndex, coste_del_nodo_actual, indice_del_nodo_goal);
-         addNeighborCellsToOpenList(openList, neighborCells, currentIndex, cpstart.gCost, cpgoal.index,maxdistance);
+         addNeighborCellsToOpenList(openList, neighborCells, currentIndex, cpstart.gCost, cpgoal.index, maxdistance);
          explorados++;
     }
 
@@ -359,7 +357,7 @@ double MyastarPlanner::calculateHCost(unsigned int start, unsigned int goal) {
   costmap_->indexToCells(goal, mgoal_x, mgoal_y);
   costmap_->mapToWorld(mgoal_x, mgoal_y, wgoal_x, wgoal_y);
   
-  return sqrt((wstart_x - wgoal_x)*(wstart_x - wgoal_x)+(wstart_y - wgoal_y)*(wstart_y - wgoal_y))+ footprintCost(mstart_x, mstart_y, wstart_x, wstart_y);
+  return sqrt(pow(wstart_x - wgoal_x, 2)+ pow(wstart_y - wgoal_y, 2)) + footprintCost(mstart_x, mstart_y, wstart_x, wstart_y);
  }
 
 
@@ -453,7 +451,7 @@ double MyastarPlanner::getMoveCost(unsigned int start, unsigned int goal) {
 //Output:
 //Description: it is used to add the neighbor Cells to the open list
 /*********************************************************************************/
-void MyastarPlanner::addNeighborCellsToOpenList(set<coupleOfCells> & OPL, vector <unsigned int> neighborCells, unsigned int parent, float gCostParent, unsigned int goalCell,double max) //,float tBreak)
+void MyastarPlanner::addNeighborCellsToOpenList(set<coupleOfCells> & OPL, vector <unsigned int> neighborCells, unsigned int parent, float gCostParent, unsigned int goalCell, double max) //,float tBreak)
 {
        set<coupleOfCells>::iterator it;
         //vector <coupleOfCells> neighborsCellsOrdered;

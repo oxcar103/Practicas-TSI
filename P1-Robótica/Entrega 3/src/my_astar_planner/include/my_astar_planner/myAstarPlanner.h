@@ -155,7 +155,7 @@ bool operator<(const coupleOfCells & c1, const coupleOfCells & c2){
       //Output:
       //Description: it is used to add the neighbor Cells to the open list
       /*********************************************************************************/
-      void addNeighborCellsToOpenList(set<coupleOfCells> & OPL, vector <unsigned int> neighborCells, unsigned int parent, float gCostParent, unsigned int goalCell,double max);
+      void addNeighborCellsToOpenList(set<coupleOfCells> & OPL, vector <unsigned int> neighborCells, unsigned int parent, float gCostParent, unsigned int goalCell, double max);
 
       double getMoveCost(unsigned int here, unsigned int there);
 
