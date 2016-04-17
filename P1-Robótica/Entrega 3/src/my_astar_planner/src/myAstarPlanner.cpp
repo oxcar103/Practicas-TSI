@@ -442,7 +442,7 @@ double MyastarPlanner::getMoveCost(unsigned int start, unsigned int goal) {
   costmap_->indexToCells(goal, mgoal_x, mgoal_y);
   costmap_->mapToWorld(mgoal_x, mgoal_y, wgoal_x, wgoal_y);
   
-  return sqrt((wstart_x - wgoal_x)*(wstart_x - wgoal_x)+(wstart_y - wgoal_y)*(wstart_y - wgoal_y)) + footprintCost(mgoal_x, mgoal_y, wgoal_x, wgoal_y);
+  return sqrt(pow(wstart_x - wgoal_x, 2)+pow(wstart_y - wgoal_y, 2)) + footprintCost(mgoal_x, mgoal_y, wgoal_x, wgoal_y);
 }
 
 /*******************************************************************************/
