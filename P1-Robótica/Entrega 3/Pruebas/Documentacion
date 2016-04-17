@@ -1,0 +1,32 @@
+Pruebas en A* : 
+
+(willow (1) :
+	Tiempo empleado : Unos 25"
+	- Ver tira de imagenes willow (1)
+)
+
+(simplerooms (1) :
+	Tiempo empleado : Unos 32"
+	- Ver tira de imagenes simplerooms (1)
+)
+
+(laberinto (1) :
+	Tiempo empleado : Unos 10"
+	- Ver tira de imagenes laberinto (1)
+)
+
+Pruebas en la mejora del algoritmo A* (Apartado 2 Entrega 3) :
+
+(willow (2) :
+	Tiempo empleado : Unos 13"
+	- Ver tira de imagenes willow (2)
+)
+
+(simplerooms (2) :
+	Tiempo empleado : Unos 32"
+	- Ver lista de imagenes simplerooms (2)
+)
+
+(laberinto (2) :
+	Tiempo empleado : Unos 12"
+)
