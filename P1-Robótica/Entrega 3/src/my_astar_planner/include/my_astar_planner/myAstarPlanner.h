@@ -56,9 +56,10 @@
 
 //includes específicos para hacer referencia a la implementación del algoritmo astar.
 
-#include<vector>
+#include <vector>
 #include <list>
 #include <set>
+#include <math.h>
 
 namespace myastar_planner{
   /**
