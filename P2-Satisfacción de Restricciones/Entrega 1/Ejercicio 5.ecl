@@ -12,4 +12,7 @@ dist(dortmund, kassel, 130).
 dist(kassel, wuerzburg, 180).
 dist(frankfurt, wuerzburg, 110).
 
-dist(X, Y, Km) :- dist(Y, X, Km).
+dist(X, Y, Km) :- dist(Y, X, Km), X\=Y.
+
+route(From, To) :- dist(From, To, Km).
+route(From, To) :- dist(From, City, Km), route(City, To), City\=From, City\=To.
