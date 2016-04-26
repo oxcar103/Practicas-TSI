@@ -19,4 +19,4 @@ route(From, To) :- dist(From, To, _), append([], [From], Route), append(Route, [
 route(From, To) :- dist(From, City, _), City\=To, route(City, To, [From]).
 
 route(From, To, Route) :- dist(From, To, _), append(Route, [From], Ruta1), append(Ruta1, [To], Ruta), print_list(Ruta).
-route(From, To, Route) :- dist(From, City, _), nonmember(City, Route), City\=To, route(City, To, Route | From).
+route(From, To, Route) :- dist(From, City, _), nonmember(City, Route), City\=To, append(Route, [From], Ruta), route(City, To, Ruta).
