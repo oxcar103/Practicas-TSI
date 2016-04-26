@@ -1,18 +1,22 @@
-dist(hamburg, bremen, 80).
-dist(hamburg, berlin, 230).
-dist(bremen, dortmund, 200).
-dist(hannover, nuernberg, 380).
-dist(dortmund, koeln, 80).
-dist(kassel, frankfurt, 180).
-dist(nuernberg, muenchen, 160).
-dist(hamburg, hannover, 110).
-dist(bremen, hannover, 100).
-dist(hannover, kassel, 140).
-dist(dortmund, kassel, 130).
-dist(kassel, wuerzburg, 180).
-dist(frankfurt, wuerzburg, 110).
+dist2(hamburg, bremen, 80).
+dist2(hamburg, berlin, 230).
+dist2(bremen, dortmund, 200).
+dist2(hannover, nuernberg, 380).
+dist2(dortmund, koeln, 80).
+dist2(kassel, frankfurt, 180).
+dist2(nuernberg, muenchen, 160).
+dist2(hamburg, hannover, 110).
+dist2(bremen, hannover, 100).
+dist2(hannover, kassel, 140).
+dist2(dortmund, kassel, 130).
+dist2(kassel, wuerzburg, 180).
+dist2(frankfurt, wuerzburg, 110).
 
-dist(X, Y, Km) :- dist(Y, X, Km), X\=Y.
+dist(X, Y, Km) :- dist2(X, Y, Km).
+dist(X, Y, Km) :- dist2(Y, X, Km).
 
-route(From, To) :- dist(From, To, Km).
-route(From, To) :- dist(From, City, Km), route(City, To), City\=From, City\=To.
+route(From, To) :- dist(From, To, _).
+route(From, To) :- dist(From, City, _), City\=To, route(City, To, [From]).
+
+route(From, To, _) :- dist(From, To, _).
+route(From, To, Route) :- dist(From, City, _), nonmember(City, Route), City\=To, route(City, To, Route | From).
