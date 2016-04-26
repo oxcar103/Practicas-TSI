@@ -15,8 +15,8 @@ dist2(frankfurt, wuerzburg, 110).
 dist(X, Y, Km) :- dist2(X, Y, Km).
 dist(X, Y, Km) :- dist2(Y, X, Km).
 
-route(From, To) :- dist(From, To, _), print_list([From, To]).
-route(From, To) :- dist(From, City, _), City\=To, route(City, To, [From]).
+route(From, To, Km) :- dist(From, To, Km), print_list([From, To]).
+route(From, To, Km) :- dist(From, City, Km2), City\=To, route(City, To, [From], Km3), Km is Km2 + Km3.
 
-route(From, To, Route) :- dist(From, To, _), append(Route, [From, To], Ruta), print_list(Ruta).
-route(From, To, Route) :- dist(From, City, _), nonmember(City, Route), City\=To, append(Route, [From], Ruta), route(City, To, Ruta).
+route(From, To, Route, Km) :- dist(From, To, Km), append(Route, [From, To], Ruta), print_list(Ruta).
+route(From, To, Route, Km) :- dist(From, City, Km2), nonmember(City, Route), City\=To, append(Route, [From], Ruta), route(City, To, Ruta, Km3), Km is Km2 + Km3.
