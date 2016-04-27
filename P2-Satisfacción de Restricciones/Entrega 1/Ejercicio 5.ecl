@@ -20,3 +20,7 @@ route(From, To, Km) :- dist(From, City, Km2), City\=To, route(City, To, [From], 
 
 route(From, To, Route, Km) :- dist(From, To, Km), append(Route, [From, To], Ruta), print_list(Ruta).
 route(From, To, Route, Km) :- dist(From, City, Km2), nonmember(City, Route), City\=To, append(Route, [From], Ruta), route(City, To, Ruta, Km3), Km is Km2 + Km3.
+
+shortestPath(From,To,Route,Km):-route(From,To,Route,Km),findall(Km2,route(From,To,Route,Km2),L),ismin(Km,L),!.
+ismin(X,[]).
+ismin(X,[Y|Tail]):-X=<Y,ismin(X,Tail).
