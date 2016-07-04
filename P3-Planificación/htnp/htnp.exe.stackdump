@@ -1,0 +1,14 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=00401904
+eax=00000000 ebx=00000000 ecx=0071C6C0 edx=0168C2A8 esi=004FE041 edi=FFFFFFFF
+ebp=0071C868 esp=0071C840 program=C:\Users\Usuario\Documents\Projects\Universidad\TSI\Practicas-ROS\P3-Planificación\htnp\htnp.exe, pid 6876, thread main
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+0071C868  00401904  (00000000, 0168C2A8, 00000002, 0071C9A0)
+0071C9B8  00414B03  (016969C8, 0168C2A8, 00000001, 00000000)
+0071CA38  00414CA1  (016969C8, 0169D7B8, 00000001, 00000000)
+0071CC48  0041896B  (00000007, 01682B18, 01680090, 0071CE64)
+0071CD58  61006198  (00000000, 0071CD90, 61005510, 0071CD90)
+61005510  61004416  (0000009C, A02404C7, E8611001, FFFFFF48)
+1001053 [main] htnp 6876 _cygtls::handle_exceptions: Exception: STATUS_ACCESS_VIOLATION
+1027998 [main] htnp 6876 _cygtls::handle_exceptions: Error while dumping state (probably corrupted stack)
