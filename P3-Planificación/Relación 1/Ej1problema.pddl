@@ -89,10 +89,11 @@
 )
 
 (:goal (and
-        (entregado objeto Princesa)
-	(entregado objeto Principe)
-	(entregado objeto Bruja)
-	(entregado objeto Profesor)
-	(entregado objeto LeonardoDiCaprio)
-	))
+        (entregado Rosa Princesa)
+	(entregado Algoritmo Principe)
+	(entregado Oscar objeto Bruja)
+	(entregado Oro objeto Profesor)
+	(entregado Oro objeto LeonardoDiCaprio)
+	)
+)
 )
