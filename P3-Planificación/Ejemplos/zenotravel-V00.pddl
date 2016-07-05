@@ -1,4 +1,4 @@
-(define (domain zeno-travel)
+﻿(define (domain zeno-travel)
 
 
 (:requirements
@@ -20,9 +20,11 @@
 (:constants slow fast - object)
 (:predicates (at ?x - (either person aircraft) ?c - city)
              (in ?p - person ?a - aircraft)
-             (different ?x ?y) (igual ?x ?y)
+             (different ?x ?y)
+             (igual ?x ?y)
              (hay-fuel ?a ?c1 ?c2)
-             )
+)
+
 (:functions (fuel ?a - aircraft)
             (distance ?c1 - city ?c2 - city)
             (slow-speed ?a - aircraft)
@@ -34,7 +36,7 @@
             (total-fuel-used)
             (boarding-time)
             (debarking-time)
-            )
+)
 
 ;; el consecuente "vac�o" se representa como "()" y significa "siempre verdad"
 (:derived
@@ -44,15 +46,14 @@
   (different ?x ?y) (not (igual ?x ?y)))
 
 
-
 ;; este literal derivado se utiliza para deducir, a partir de la información en el estado actual, 
 ;; si hay fuel suficiente para que el avión ?a vuele de la ciudad ?c1 a la ?c2
 ;; el antecedente de este literal derivado comprueba si el fuel actual de ?a es mayor que 1. 
 ;; En este caso es una forma de describir que no hay restricciones de fuel. Pueden introducirse una
 ;; restricción más copleja  si en lugar de 1 se representa una expresión más elaborada (esto es objeto de
 ;; los siguientes ejercicios).
-(:derived 
-  
+
+(:derived   
   (hay-fuel ?a - aircraft ?c1 - city ?c2 - city)
   (> (fuel ?a) 1))
 
@@ -66,13 +67,11 @@
 	 
    
    (:method Case2 ;si no est� en la ciudad destino, pero avion y persona est�n en la misma ciudad
-	  :precondition (and (at ?p - person ?c1 - city)
-			                 (at ?a - aircraft ?c1 - city))
-				     
-	  :tasks ( 
-	  	      (board ?p ?a ?c1)
-		        (mover-avion ?a ?c1 ?c)
-		        (debark ?p ?a ?c )))
+	  :precondition (and (at ?p - person ?c1 - city) (at ?a - aircraft ?c1 - city))		     
+	  :tasks (
+		(board ?p ?a ?c1)
+		(mover-avion ?a ?c1 ?c)
+		(debark ?p ?a ?c )))
 	)
 
 (:task mover-avion

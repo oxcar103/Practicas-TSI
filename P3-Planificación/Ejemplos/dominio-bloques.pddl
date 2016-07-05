@@ -1,4 +1,4 @@
-(define (domain bloques)
+﻿(define (domain bloques)
 (:requirements
   :typing
   :fluents
@@ -47,34 +47,44 @@
           (limpiar ?y)
           (colocar ?x ?y)
           )
-))
+ )
+)
 
 (:task limpiar
  :parameters (?x)
  (:method limpiar_mesa
   :precondition (igual ?x mesa)
-  :tasks())
+  :tasks()
+ )
  (:method limpiar_libre
   :precondition (libre ?x)
-  :tasks ())
+  :tasks ()
+ )
  (:method limpiar_ocupado
   :precondition (sobre ?y ?x)
-  :tasks ((limpiar ?y)(colocar ?y mesa))))
+  :tasks ((limpiar ?y)(colocar ?y mesa))
+ )
+)
   
 (:task colocar
  :parameters (?x ?y)
  (:method colocar
   :precondition ()
-  :tasks ((primero-coge ?x)(despues-deja ?x ?y))))
+  :tasks ((primero-coge ?x)(despues-deja ?x ?y))
+ )
+)
 
 (:task primero-coge
  :parameters (?x - bloque)
  (:method cogelo_de_la_mesa
   :precondition (sobremesa ?x)
-  :tasks (coger ?x))
+  :tasks (coger ?x)
+ )
  (:method cogelo_de_la_pila
   :precondition (sobre ?x ?y)
-  :tasks (desapilar ?x ?y)))
+  :tasks (desapilar ?x ?y)
+ )
+)
 
 (:task despues-deja
  :parameters (?x - bloque ?y - object)
@@ -83,20 +93,21 @@
   :tasks (dejar ?x))
  (:method dejalo_en_la_pila
   :precondition (distinto ?y mesa)
-  :tasks (apilar ?x ?y)))
-
+  :tasks (apilar ?x ?y)
+ )
+)
 
 (:action coger
  :parameters (?x - bloque)
  :precondition (and (sobremesa ?x)(libre ?x)(manovacia))
- :effect (and (not (sobremesa ?x)) (not (libre ?x))(not (manovacia))
-	      (cogido ?x)))
+ :effect (and (not (sobremesa ?x)) (not (libre ?x))(not (manovacia)) (cogido ?x))
+)
 
 (:action dejar
  :parameters (?x - bloque)
  :precondition (cogido ?x)
- :effect (and (sobremesa ?x) (libre ?x) (manovacia)
-              (not (cogido ?x))))
+ :effect (and (sobremesa ?x) (libre ?x) (manovacia) (not (cogido ?x)))
+)
 
 (:action apilar
  :parameters (?x ?y - bloque)
