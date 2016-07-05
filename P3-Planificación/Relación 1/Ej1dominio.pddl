@@ -21,7 +21,11 @@
     :parameters (?j - jugador ?origen ?destino - zona)
     :precondition (and
 		     (at ?j ?origen)
-		     (conectada ?origen ?destino))
+		     (or
+		        (conectada ?origen ?destino)
+		        (conectada ?destino ?origen)
+		     )
+		  )
     :effect (and
               (at ?j ?destino)
               (not (at ?j ?origen)))
