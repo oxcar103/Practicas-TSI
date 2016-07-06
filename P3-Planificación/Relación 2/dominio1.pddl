@@ -75,7 +75,7 @@
                  (debark ?p ?a ?c )
                 )
       )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EJERCICIO1-------- 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 1
       (:method Case3 ; si no est? en la ciudad destino, y tampoco avion y persona est?n en la misma ciudad
          :precondition (and (at ?p - person ?c1 - city)
                             (at ?a - aircraft ?c2 - city)
