@@ -37,7 +37,7 @@
 	 (fuel-limit) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 3
    )
 
-   ;; el consecuente "vac?o" se representa como "()" y significa "siempre verdad"
+   ;; el consecuente "vacío" se representa como "()" y significa "siempre verdad"
    (:derived
          (igual ?x ?x) ()
    )
@@ -49,7 +49,7 @@
 
    ;; este literal derivado se utiliza para deducir, a partir de la información en el estado actual, 
    ;; si hay fuel suficiente para que el avión ?a vuele de la ciudad ?c1 a la ?c2
-   ;; el antecedente de este literal derivado comprueba si el fuel actual de ?a es mayor que 1. 
+   ;; el antecedente de este literal derivado comprueba si el fuel actual de ?a es mayor que 1.
    ;; En este caso es una forma de describir que no hay restricciones de fuel. Pueden introducirse una
    ;; restricción más copleja  si en lugar de 1 se representa una expresión más elaborada (esto es objeto de
    ;; los siguientes ejercicios).
@@ -61,12 +61,12 @@
    (:task transport-person
          :parameters (?p - person ?c - city)
 
-      (:method Case1 ; si la persona est? en la ciudad no se hace nada
+      (:method Case1 ; si la persona está en la ciudad no se hace nada
          :precondition (at ?p ?c)
          :tasks ()
       )
 
-      (:method Case2 ;si no est? en la ciudad destino, pero avion y persona est?n en la misma ciudad
+      (:method Case2 ;si no está en la ciudad destino, pero avión y persona están en la misma ciudad
          :precondition (and (at ?p - person ?c1 - city)
                             (at ?a - aircraft ?c1 - city)
                         )
