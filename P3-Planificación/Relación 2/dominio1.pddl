@@ -34,6 +34,7 @@
          (total-fuel-used)
          (boarding-time)
          (debarking-time)
+	 (fuel-limit) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 3
    )
 
    ;; el consecuente "vac?o" se representa como "()" y significa "siempre verdad"
@@ -54,7 +55,7 @@
    ;; los siguientes ejercicios).
    (:derived
          (hay-fuel ?a - aircraft ?c1 - city ?c2 - city)
-         (> (fuel ?a) 1)
+         (> (fuel ?a) (slow-burn ?a)) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Ejercicio 3
    )
 
    (:task transport-person
@@ -75,8 +76,8 @@
                  (debark ?p ?a ?c )
                 )
       )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 1
-      (:method Case3 ; si no est? en la ciudad destino, y tampoco avion y persona est?n en la misma ciudad
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 1
+      (:method Case3 ; si no está en la ciudad destino, y tampoco avion y persona están en la misma ciudad
          :precondition (and (at ?p - person ?c1 - city)
                             (at ?a - aircraft ?c2 - city)
                        )
@@ -86,7 +87,7 @@
                  (mover-avion ?a ?c1 ?c)
                  (debark ?p ?a ?c )
                 )
-     )
+      )
    )
 
    (:task mover-avion
@@ -104,13 +105,42 @@
                  (fly ?a ?c1 ?c2)
                 )
       )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 2
       (:method fuel-insuficiente
-         :precondition( not(hay-fuel ?a ?c1 ?c2) ) 
+         :precondition( not(hay-fuel ?a ?c1 ?c2) )
          :tasks(
                 (refuel ?a ?c1)
                 (fly ?a ?c1 ?c2)
                )
+      )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 3
+      (:method fuel-insufuciente-zoom
+         :precondition (and (not(hay-fuel ?a ?c1 ?c2))
+                            (< (+ (+ (total-fuel-used) (* (distance ?c1 ?c2) (fast-burn ?a))) (capacity ?a)) (fuel-limit))
+                       )
+         :tasks (
+                 (refuel ?a ?c1)
+                 (zoom ?a ?c1 ?c2)
+                )
+      )
+
+      (:method vuela-rapido
+         :precondition ( and (>= (fuel ?a) (* (distance ?c1 ?c2) (fast-burn ?a)))
+                             (< (+ (total-fuel-used) (* (distance ?c1 ?c2) (fast-burn ?a))) (fuel-limit))
+                       )
+         :tasks (
+                  (zoom ?a ?c1 ?c2)
+                 )
+      )
+
+      (:method vuela-lento
+         :precondition (and (hay-fuel ?a ?c1 ?c2)
+                            (< (+ (total-fuel-used) (* (distance ?c1 ?c2) (slow-burn ?a))) (fuel-limit))
+                       )
+         :tasks (
+                 (fly ?a ?c1 ?c2)
+                )
       )
    )
 
