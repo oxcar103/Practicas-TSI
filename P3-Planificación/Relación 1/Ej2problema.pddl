@@ -1,4 +1,4 @@
-(define (problem BW-1)
+(define (problem BW-2)
 (:domain BelkamWorld)
 (:objects
 	Oxcar103 - jugador
