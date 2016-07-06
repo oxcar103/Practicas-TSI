@@ -106,7 +106,7 @@
                 )
       )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 2
-      (:method fuel-insuficiente
+      (:method fuel-insuficiente-fly
          :precondition( not(hay-fuel ?a ?c1 ?c2) )
          :tasks(
                 (refuel ?a ?c1)
@@ -130,8 +130,8 @@
                              (< (+ (total-fuel-used) (* (distance ?c1 ?c2) (fast-burn ?a))) (fuel-limit))
                        )
          :tasks (
-                  (zoom ?a ?c1 ?c2)
-                 )
+                 (zoom ?a ?c1 ?c2)
+                )
       )
 
       (:method vuela-lento
