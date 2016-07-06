@@ -81,12 +81,12 @@
                             (at ?a - aircraft ?c2 - city)
                        )
          :tasks (
-                  (mover-avion ?a ?c2 ?c1)
-                  (board ?p ?a ?c1)
-                  (mover-avion ?a ?c1 ?c)
-                  (debark ?p ?a ?c )
-                 )
-      )
+                 (mover-avion ?a ?c2 ?c1)
+                 (board ?p ?a ?c1)
+                 (mover-avion ?a ?c1 ?c)
+                 (debark ?p ?a ?c )
+                )
+     )
    )
 
    (:task mover-avion
@@ -103,6 +103,14 @@
          :tasks (
                  (fly ?a ?c1 ?c2)
                 )
+      )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 2
+      (:method fuel-insuficiente
+         :precondition( not(hay-fuel ?a ?c1 ?c2) ) 
+         :tasks(
+                (refuel ?a ?c1)
+                (fly ?a ?c1 ?c2)
+               )
       )
    )
 
