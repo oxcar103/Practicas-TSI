@@ -19,7 +19,8 @@
    (:predicates
          (at ?x - (either person aircraft) ?c - city)
          (in ?p - person ?a - aircraft)
-         (different ?x ?y) (igual ?x ?y)
+         (different ?x ?y)
+         (igual ?x ?y)
          (hay-fuel ?a ?c1 ?c2)
    )
    (:functions
