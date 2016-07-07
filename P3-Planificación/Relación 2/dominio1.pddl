@@ -34,7 +34,7 @@
          (total-fuel-used)
          (boarding-time)
          (debarking-time)
-	 (fuel-limit) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 3
+         (fuel-limit) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ejercicio 3
    )
 
    ;; el consecuente "vacío" se representa como "()" y significa "siempre verdad"
