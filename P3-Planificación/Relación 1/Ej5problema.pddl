@@ -1,4 +1,4 @@
-(define (problem BW-3)
+(define (problem BW-5)
    (:domain BelkamWorld)
 
    (:objects
