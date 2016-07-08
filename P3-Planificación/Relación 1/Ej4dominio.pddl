@@ -147,7 +147,7 @@
       :effect (and (entregado ?o ?p)
                    (manolibre ?j)
                    (not (cogido ?o ?j))
-                   (= (puntos ?j) (+ (puntos ?j) (puntosentrega ?o ?p)))
+                   (increase (puntos ?j) (puntosentrega ?o ?p))
               )
    )
 
