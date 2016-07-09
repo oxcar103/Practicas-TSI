@@ -176,101 +176,80 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 		\end{itemize}
 
 	\subsection{Acciones permitidas}
-		   (:action ir
+		Claramente, necesitamos definir unas instrucciones básicas para interactuar con el mundo:
+		\begin{itemize}
+			\item \textit{ir}: Esta acción nos permite mover al jugador de una zona a otra, por tanto,
+			tenemos que comprobar que nuestro personaje está en la primera zona antes de movernos y que
+			ambas zonas estén unidas para poder ir en un sólo paso, y el resultado será que el personaje
+			está en la nueva zona y no en la primera como se puede apreciar:
+			\begin{verbatim}
+(:action ir
+   :parameters (?j - jugador ?origen ?destino - zona)
+   :precondition (and (at ?j ?origen)
+                      (or
+                         (conectada ?origen ?destino)
+                         (conectada ?destino ?origen)
+                      )
+                 )
+   :effect (and (at ?j ?destino)
+                (not (at ?j ?origen))
+           )
+)
+			\end{verbatim}
+			
+			\item \textit{coger}: Esta acción permite al jugador recoger un objeto del suelo, por tanto,
+			tenemos que comprobar que nuestro personaje y el objeto que vamos a coger, están en la misma
+			zona y que el jugador no tiene otro objeto ya, y el resultado será que el personaje coge el
+			objeto y el objeto ya no está en la zona del mundo, como se comprueba en el código:
+			\begin{verbatim}
+(:action coger
+   :parameters (?z - zona ?o - objeto ?j - jugador)
+   :precondition (and (at ?o ?z)
+                      (libre ?j)
+                      (at ?j ?z)
+                 )
+   :effect (and (not (libre ?j))
+                (cogido ?o ?j )
+                (not (at ?o ?z))
+           )
+)
+			\end{verbatim}
 
-		      :parameters (?j - jugador ?origen ?destino - zona)
+			\item \textit{coger}: Esta acción permite al jugador dejar un objeto en una zona, por tanto,
+			tenemos que comprobar que nuestro personaje tiene el objeto cogido y que el jugador está en
+			la zona en la que lo quiere soltar, y el resultado será que el personaje está libre y el
+			objeto está en la zona del mundo indicada, como se refleja en la acción:
+			\begin{verbatim}
+(:action dejar
+   :parameters (?z - zona ?o - objeto ?j - jugador)
+   :precondition (and (cogido ?o ?j)
+                      (at ?j ?z)
+                 )
+   :effect (and (at ?o ?z)
+                (libre ?j)
+                (not (cogido ?o ?j))
+           )
+)
+			\end{verbatim}
 
-		      :precondition (and (at ?j ?origen)
-
-		                         (or
-
-		                            (conectada ?origen ?destino)
-
-		                            (conectada ?destino ?origen)
-
-		                         )
-
-		                    )
-
-		      :effect (and (at ?j ?destino)
-
-		                   (not (at ?j ?origen))
-
-		              )
-
-		   )
-
-		
-
-		   (:action coger
-
-		      :parameters (?z - zona ?o - objeto ?j - jugador)
-
-		      :precondition (and (at ?o ?z)
-
-		                         (libre ?j)
-
-		                         (at ?j ?z)
-
-		                    )
-
-		      :effect (and (not (libre ?j))
-
-		                   (cogido ?o ?j )
-
-		                   (not (at ?o ?z))
-
-		              )
-
-		   )
-
-		
-
-		   (:action dejar
-
-		      :parameters (?z - zona ?o - objeto ?j - jugador)
-
-		      :precondition (and (cogido ?o ?j)
-
-		                         (at ?j ?z)
-
-		                    )
-
-		      :effect (and (at ?o ?z)
-
-		                   (libre ?j)
-
-		                   (not (cogido ?o ?j))
-
-		              )
-
-		   )
-
-		
-
-		   (:action entregar
-
-		      :parameters (?z - zona ?o - objeto ?j - jugador ?p - personaje)
-
-		      :precondition (and (cogido ?o ?j)
-
-		                         (at ?j ?z)
-
-		                         (at ?p ?z)
-
-		                    )
-
-		      :effect (and (entregado ?o ?p)
-
-		                   (libre ?j)
-
-		                   (not (cogido ?o ?j))
-
-		              )
-
-		   )
-
-		
+			\item \textit{entregar}: Esta acción permite al jugador entregar un objeto a un personaje, por
+			tanto, tenemos que comprobar que nuestro personaje y el personaje están en la misma zona y que
+			el personaje tiene el objeto, y el resultado será que el personaje estará libre y que se ha
+			entregado el objeto al personaje como podemos ver:
+			\begin{verbatim}
+(:action entregar
+   :parameters (?z - zona ?o - objeto ?j - jugador ?p - personaje)
+   :precondition (and (cogido ?o ?j)
+                      (at ?j ?z)
+                      (at ?p ?z)
+                 )
+   :effect (and (entregado ?o ?p)
+                (libre ?j)
+                (not (cogido ?o ?j))
+           )
+)
+			\end{verbatim}
+		\end{itemize}
 	
 	\subsection{Problema: planteamiento y resolución}
 		Como dijimos en el primer apartado, la ubicación inicial del jugador, los personajes y los objetos
@@ -287,5 +266,13 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 			\caption{Solución del problema 1.}
 			\label{Prob-1}
 		\end{figure}
-	
+		
+\section{Consumo de energía}
+	\subsection{Implementación}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Problema2.jpg}
+			\caption{Solución del problema 2.}
+			\label{Prob-2}
+		\end{figure}
 \end{document}
