@@ -106,7 +106,9 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 % Resumen (Descomentar para usarlo)
 \renewcommand{\abstractname}{Resumen} % Uncomment to change the name of the abstract to something else
 \begin{abstract}
-	En esta práctica, hacemos cosas muy nazis.
+	En esta práctica, nos presentan una aventura gráfica y tenemos que modelar sus reglas, objetivos, así
+	como el comportamiento del jugador de forma deliberativa para lograr alcanzar las metas que se le vayan
+	proponiendo de la forma más óptima posible.
 \end{abstract}
 
 % Índice
@@ -117,12 +119,44 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 
 %% Inicio del documento
 
-\section{Título}
+\section{Mapa del mundo}
+	Por la complejidad de las 25 zonas, me fue necesario el dibujo de un mapa para testear (que
+	posteriormente reutilicé) para facilitarme la creación del archivo de problema y no dejar
+	zonas aislada.
+	
+	Las posibles zonas aisladas se pueden producir por:
+	\begin{itemize}
+		\item Establecer dos o más zonas no conectadas.
+		\item Ubicar precipios en zonas que necesitaban ser transitables.
+		\item De forma más complicada, colocar bosques o agua en zonas que necesiten ser atravesadas
+		sin colocar el objeto correspondiente para atravesarlos de forma accesible.
+	\end{itemize} 
+	
+	El mapa utilizado fue el siguiente:
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=15cm]{BelkanWorld.png}
 		\caption{Mapa de los mundos de Belkan.}
 		\label{world}
 	\end{figure}
+
+\section{Características básicas}
+	En este apartado, se configuran las características más básicas del juego, dejando para apartados
+	posteriores la implementación de las reglas, limitaciones y optimizaciones.
+	
+	\subsection{Objetos del mundo}
+	Para la implementación de los objetos del mundo, usaremos la sintaxis de PDDL dada por:
+	\begin{verbatim}
+	(:types jugador
+	        personaje
+	        objeto
+	        zona
+	)
+	\end{verbatim}
+	
+	Aunque se podría haber optado por definir cada uno de los personajes y objetos en este
+	apartado, considero más adecuado la inicialización de los distintos personajes y objetos
+	dentro del archivo de problema.
+	
 	
 \end{document}
