@@ -21,7 +21,13 @@
          (in ?p - person ?a - aircraft)
          (different ?x ?y)
          (igual ?x ?y)
+         (destino ?p - person ?c - city)
+         (distancia ?x ?y ?d)
          (hay-fuel ?a ?c1 ?c2)
+         (hay-fuel-fast ?a ?c1 ?c2)
+         (suficiente-fuel-slow ?a ?c1 ?c2)
+         (suficiente-fuel-fast ?a ?c1 ?c2)
+         (excede-fuel-fast ?a ?c1 ?c2)
    )
    (:functions
          (fuel ?a - aircraft)
@@ -47,16 +53,51 @@
          (different ?x ?y) (not (igual ?x ?y))
    )
 
+   (:derived 
+         (distancia ?x ?y - city ?d - number)
+         (or
+            (bind ?d (distance ?y ?x))
+            (bind ?d (distance ?x ?y))
+         )
+   )
 
    ;; este literal derivado se utiliza para deducir, a partir de la información en el estado actual, 
    ;; si hay fuel suficiente para que el avión ?a vuele de la ciudad ?c1 a la ?c2
    ;; el antecedente de este literal derivado comprueba si el fuel actual de ?a es mayor que 1.
    ;; En este caso es una forma de describir que no hay restricciones de fuel. Pueden introducirse una
-   ;; restricción más copleja  si en lugar de 1 se representa una expresión más elaborada (esto es objeto de
+   ;; restricción más compleja  si en lugar de 1 se representa una expresión más elaborada (esto es objeto de
    ;; los siguientes ejercicios).
    (:derived
          (hay-fuel ?a - aircraft ?c1 - city ?c2 - city)
          (> (fuel ?a) (slow-burn ?a))
+   )
+
+   (:derived
+         (hay-fuel-fast ?a - aircraft ?c1 - city ?c2 - city)
+         (and (distancia ?c1 ?c2 - city ?d - number)
+              (>= (fuel ?a) (* ?d (fast-burn ?a)))
+         )
+   )
+
+   (:derived
+         (suficiente-fuel-fast ?a - aircraft ?c1 - city ?c2 - city)
+         (and (distancia ?c1 ?c2 - city ?d - number)
+              (< (+ (total-fuel-used) (* ?d (fast-burn ?a))) (fuel-limit))
+         )
+   )
+
+   (:derived
+         (suficiente-fuel-slow ?a - aircraft ?c1 - city ?c2 - city)
+         (and (distancia ?c1 ?c2 - city ?d - number)
+              (< (+ (total-fuel-used) (* ?d (slow-burn ?a))) (fuel-limit))
+         )
+   )
+
+   (:derived
+         (excede-fuel-fast ?a - aircraft ?c1 - city ?c2 - city)
+         (and (distancia ?c1 ?c2 - city ?d - number)
+              (< (+ (+ (total-fuel-used) (* ?d (fast-burn ?a))) (capacity ?a)) (fuel-limit))
+         )
    )
 
    (:task transport-person
@@ -71,10 +112,27 @@
          :precondition (and (at ?p - person ?c1 - city)
                             (at ?a - aircraft ?c1 - city)
                         )
-         :tasks ( 
-                 (board ?p ?a ?c1)
+         :tasks (
+                 (forall (?x - person)
+                    (when (and (destino ?x ? person ?c ? city)
+                               (at ?x - person ?c1 - city)
+                               (> (free-seat) 0)
+                          )
+                          (and (decrease (free-seat) 1)
+                               (board ?x ?a ?c1)
+                          )
+                    )
+                 )
                  (mover-avion ?a ?c1 ?c)
-                 (debark ?p ?a ?c )
+                 (forall (?x - person)
+                    (when (and (destino ?x ? person ?c ? city)
+                               (at ?x - person ?a - aircraft)
+                          )
+                          (and (increase (free-seat) 1)
+                               (debark ?x ?a ?c)
+                          )
+                    )
+                 )
                 )
       )
 
@@ -84,15 +142,32 @@
                        )
          :tasks (
                  (mover-avion ?a ?c2 ?c1)
-                 (board ?p ?a ?c1)
+                 (forall (?x - person)
+                    (when (and (destino ?x ? person ?c ? city)
+                               (at ?x - person ?c1 - city)
+                               (> (free-seat) 0)
+                          )
+                          (and (decrease (free-seat) 1)
+                               (board ?x ?a ?c1)
+                          )
+                    )
+                 )
                  (mover-avion ?a ?c1 ?c)
-                 (debark ?p ?a ?c )
+                 (forall (?x - person)
+                    (when (and (destino ?x ? person ?c ? city)
+                               (at ?x - person ?a - aircraft)
+                          )
+                          (and (increase (free-seat) 1)
+                               (debark ?x ?a ?c)
+                          )
+                    )
                 )
+               )
       )
    )
 
    (:task mover-avion
-         :parameters (?a - aircraft ?c1 - city ?c2 -city)
+         :parameters (?a - aircraft ?c1 - city ?c2 - city)
 
       (:method fuel-suficiente ;; este método se escogerá para usar la acción fly siempre que el avión tenga fuel para
                                ;; volar desde ?c1 a ?c2
@@ -117,7 +192,7 @@
 
       (:method fuel-insufuciente-zoom
          :precondition (and (not(hay-fuel ?a ?c1 ?c2))
-                            (< (+ (+ (total-fuel-used) (* (distance ?c1 ?c2) (fast-burn ?a))) (capacity ?a)) (fuel-limit))
+                            (excede-fuel-fast ?a ?c1 ?c2)
                        )
          :tasks (
                  (refuel ?a ?c1)
@@ -126,8 +201,8 @@
       )
 
       (:method vuela-rapido
-         :precondition ( and (>= (fuel ?a) (* (distance ?c1 ?c2) (fast-burn ?a)))
-                             (< (+ (total-fuel-used) (* (distance ?c1 ?c2) (fast-burn ?a))) (fuel-limit))
+         :precondition ( and (hay-fuel-fast ?a ?c1 ?c2)
+                             (suficiente-fuel-fast ?a ?c1 ?c2)
                        )
          :tasks (
                  (zoom ?a ?c1 ?c2)
@@ -136,7 +211,7 @@
 
       (:method vuela-lento
          :precondition (and (hay-fuel ?a ?c1 ?c2)
-                            (< (+ (total-fuel-used) (* (distance ?c1 ?c2) (slow-burn ?a))) (fuel-limit))
+                            (suficiente-fuel-slow ?a ?c1 ?c2)
                        )
          :tasks (
                  (fly ?a ?c1 ?c2)
