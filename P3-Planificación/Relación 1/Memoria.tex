@@ -139,24 +139,153 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 		\caption{Mapa de los mundos de Belkan.}
 		\label{world}
 	\end{figure}
+	
+	La colocación del jugador, los personajes, los objetos y los tipos de terrenos fue arbitraria pero
+	verificando que era posible el correcto paso por todas las zonas permitidas.
 
 \section{Características básicas}
 	En este apartado, se configuran las características más básicas del juego, dejando para apartados
 	posteriores la implementación de las reglas, limitaciones y optimizaciones.
 	
 	\subsection{Objetos del mundo}
-	Para la implementación de los objetos del mundo, usaremos la sintaxis de PDDL dada por:
-	\begin{verbatim}
-	(:types jugador
-	        personaje
-	        objeto
-	        zona
-	)
-	\end{verbatim}
+		Para la implementación de los objetos del mundo, usaremos la sintaxis de PDDL dada por:
+		\begin{verbatim}
+		(:types jugador
+		        personaje
+		        objeto
+		        zona
+		)
+		\end{verbatim}
+		
+		Aunque se podría haber optado por definir cada uno de los personajes y objetos en este
+		apartado, considero más adecuado la inicialización de los distintos personajes y objetos
+		dentro del archivo de problema.
 	
-	Aunque se podría haber optado por definir cada uno de los personajes y objetos en este
-	apartado, considero más adecuado la inicialización de los distintos personajes y objetos
-	dentro del archivo de problema.
+	\subsection{Estados del mundo}
+		Para el correcto mantenimiento del mundo, debemos utilizar estados o predicados para comprobar
+		el estado actual del mundo, permitiendo así conocer:
+		\begin{itemize}
+			\item Zonas que están conectadas mediante el predicado \textit{(conectada ?z1 ?z2 - zona)}
+			\item La disponibilidad de objetos, así como la ubicación de los personajes o el propio
+			jugador dentro del mapa que tenemos usando \textit{(at ?x - (either jugador personaje objeto)
+			?z - zona)}.
+			\item Si el jugador tiene algún objeto encima con \textit{(libre ?j - jugador)}.
+			\item En caso de tener un objeto, cuál es comprobando \textit{(cogido ?o - objeto ?j -
+			jugador)}.
+			\item Y finalmente, qué objeto entregamos: \textit{(entregado ?o - objeto ?p - personaje)}.
+		\end{itemize}
+
+	\subsection{Acciones permitidas}
+		   (:action ir
+
+		      :parameters (?j - jugador ?origen ?destino - zona)
+
+		      :precondition (and (at ?j ?origen)
+
+		                         (or
+
+		                            (conectada ?origen ?destino)
+
+		                            (conectada ?destino ?origen)
+
+		                         )
+
+		                    )
+
+		      :effect (and (at ?j ?destino)
+
+		                   (not (at ?j ?origen))
+
+		              )
+
+		   )
+
+		
+
+		   (:action coger
+
+		      :parameters (?z - zona ?o - objeto ?j - jugador)
+
+		      :precondition (and (at ?o ?z)
+
+		                         (libre ?j)
+
+		                         (at ?j ?z)
+
+		                    )
+
+		      :effect (and (not (libre ?j))
+
+		                   (cogido ?o ?j )
+
+		                   (not (at ?o ?z))
+
+		              )
+
+		   )
+
+		
+
+		   (:action dejar
+
+		      :parameters (?z - zona ?o - objeto ?j - jugador)
+
+		      :precondition (and (cogido ?o ?j)
+
+		                         (at ?j ?z)
+
+		                    )
+
+		      :effect (and (at ?o ?z)
+
+		                   (libre ?j)
+
+		                   (not (cogido ?o ?j))
+
+		              )
+
+		   )
+
+		
+
+		   (:action entregar
+
+		      :parameters (?z - zona ?o - objeto ?j - jugador ?p - personaje)
+
+		      :precondition (and (cogido ?o ?j)
+
+		                         (at ?j ?z)
+
+		                         (at ?p ?z)
+
+		                    )
+
+		      :effect (and (entregado ?o ?p)
+
+		                   (libre ?j)
+
+		                   (not (cogido ?o ?j))
+
+		              )
+
+		   )
+
+		
 	
+	\subsection{Problema: planteamiento y resolución}
+		Como dijimos en el primer apartado, la ubicación inicial del jugador, los personajes y los objetos
+		fue arbitraria. Sin embargo, se le estableció que inicialmente el jugador no tuviese nada encima y
+		se le dio el objetivo de entregar un objeto a cada personaje de que se le restringió a unos
+		específicos.
+		
+		En concreto, en este mapa se ubicaron 2 Oscar's, 3 Manzana's, 1 Rosa, 2 Algoritmo's y 5 Oro's.
+		
+		El resultado de la ejecución del problema es:
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Problema1.jpg}
+			\caption{Solución del problema 1.}
+			\label{Prob-1}
+		\end{figure}
 	
 \end{document}
