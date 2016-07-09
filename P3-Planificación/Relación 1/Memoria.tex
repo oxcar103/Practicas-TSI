@@ -423,4 +423,52 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 		problema las puntuaciones que aportará cada objeto al entregarlo a cada personaje.
 		
 		La única diferencia a nivel de acciones aquí registrado es que la acción \verb|entregar|
+		incorporará un efecto en el que se aplicará la suma correspondiente.
+		
+\section{Capacidad de la mochila}
+	\subsection{Múltiples bolsillos}
+		Ahora, el número de objetos que puede llevar la mochila viene dado por el archivo problema, dando
+		posibilidad de no llevar ninguno y estar como en los primeros apartados o incluso poder llevar todos
+		los objetos del mapa.
+		
+		Lo que se solucionará con dos funciones \verb|(capacidadmochila ?j - jugador)| para conocer el tope
+		de la mochila y \verb|(usomochila ?j - jugador)| para el tamaño actual o equivalentemente con una
+		sola función \verb|(bolsilloslibres ?j jugador)| que controla cuántos objetos aún podemos meterle.
+		
+		Estas nuevas funciones alteran las acciones de \textit{cogermochila} y \textit{dejarmochila}.
+		
+		Finalmente, \textit{cogermochila} queda así:
+		\begin{verbatim}
+(:action cogermochila
+   :parameters (?o - objeto ?j - jugador)
+   :precondition (and (manolibre ?j)
+                      (enmochila ?o ?j)
+                 )
+   :effect (and (not (manolibre ?j))
+                (decrease (usomochila ?j) 1)
+                (cogido ?o ?j )
+                (not (enmochila ?o ?j))
+           )
+)
+		\end{verbatim}
+
+		Y el método de \textit{dejarmochila} sería:
+		\begin{verbatim}
+(:action dejarmochila
+   :parameters (?o - objeto ?j - jugador)
+   :precondition (and (cogido ?o ?j)
+                      (< (usomochila ?j) (capacidadmochila ?j))
+                 )
+   :effect (and (manolibre ?j)
+                (increase (usomochila ?j) 1)
+                (not (cogido ?o ?j))
+                (enmochila ?o ?j)
+           )
+)
+		\end{verbatim}
+		
+\section{Problemas}
+	A partir del tercer problema, el programa quedaba intentando encontrar una solución y tras dejarlo
+	más de una noche, opté por suprimir estos apartados por miedo a hacerle daño a mi propio portátil.
+		
 \end{document}
