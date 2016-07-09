@@ -196,6 +196,15 @@ Entrega 2: Dominios y problemas de planificación HTN} % Subtitle
 
 \section{Dominio 2}
 	\subsection{Implementar \textit{(distancia ?x ?y ?d)} como predicado derivado}
+	Para hacer constar al planificador de la simetría en la distancia entre 2 ciudades cualesquiera,
+	elaboraremos un predicado derivado de \textit{distance ?x ?y}, utilizando para ello la cláusula
+	\textit{or} junto con \textit{bind ?d} para permitir la validación del predicado estando declarados
+	\textit{distance ?x ?y} o \textit{distance ?y ?x} pero no necesariamente ambos.
+	
+	Ahora, bastaría con sustituir las apariciones en el resto del código de \textit{distance ?x ?y}
+	por \textit{?d} y, dentro de una cláusula \textit{and} con las cláusulas que se han modificado, el
+	predicado recién creado \textit{distancia ?x ?y ?d}.
+	
 	\subsection{Modificar \textit{board} y \textit{debark} para permitir embarcar varios pasajeros}
 	\subsection{Permitir embarcar varios pasajeros}
 	\subsection{Duración limitada del viaje}
