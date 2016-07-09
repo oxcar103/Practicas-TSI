@@ -285,4 +285,134 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 			\caption{Solución del problema 2.}
 			\label{Prob-2}
 		\end{figure}
+
+\section{Tipos de terreno y mochila}
+	\subsection{Desplazamiento en distintos terrenos y objetos especiales}
+		La existencia de los distintos tipos de terrenos requiere de la implemetación de predicados que
+		controlen el tipo de terreno del que disponemos: \verb|(esbosque ?z - zona)|, \verb|(esagua ?z - zona)|,
+		\verb|(esprecipicio ?z - zona)|, \verb|(esarena ?z - zona)| y \verb|(espiedra ?z - zona)|
+		
+		Además, el desplazamiento por bosque o agua requiere de dos objetos especiales que también se
+		controlarán por los predicados: \verb|(esbikini ?o - objeto)|, \verb|(eszapatilla ?o - objeto)|
+		
+		Además, debemos introducir las precondiciones de cada zona:
+		\begin{itemize}
+			\item Para controlar bien las condiciones de bosque y agua, he decidido separar la acción
+			\verb|ir| en 3 definiciones siendo una dedicada para el bosque, otra para el agua y otra
+			para el resto.
+			
+			\item En la acción dedicada al bosque, se comprueba lo mismo que en la acción \verb|ir| que
+			teníamos previamente definida y le añadimos las condiciones de que la zona sea bosque y que
+			tenemos las zapatillas:
+			\begin{verbatim}
+(:action ir
+   :parameters (?j - jugador ?origen ?destino - zona ?o -objeto)
+   :precondition (and (at ?j ?origen)
+                      (> (energia ?j) 0)
+                      (or
+                         (conectada ?origen ?destino)
+                         (conectada ?destino ?origen)
+                      )
+                      (esbosque ?destino)
+                      (eszapatilla ?o)
+                      (or
+                         (cogido ?o ?j)
+                         (enmochila?o ?j)
+                      )
+                 )
+   :effect (and (at ?j ?destino)
+                (not (at ?j ?origen))
+                (decrease (energia ?j) 1)
+           )
+)
+			\end{verbatim}
+
+			\item Para la zona de agua, se procede de forma análoga salvo que la zona debe ser agua y el
+			objeto, el bikini:
+			\begin{verbatim}
+(:action ir
+   :parameters (?j - jugador ?origen ?destino - zona ?o -objeto)
+   :precondition (and (at ?j ?origen)
+                      (> (energia ?j) 0)
+                      (or
+                         (conectada ?origen ?destino)
+                         (conectada ?destino ?origen)
+                      )
+                      (esagua ?destino)
+                      (esbikini ?o)
+                      (or
+                         (cogido ?o ?j)
+                         (enmochila?o ?j)
+                      )
+                 )
+   :effect (and (at ?j ?destino)
+                (not (at ?j ?origen))
+                (decrease (energia ?j) 1)
+           )
+)
+			\end{verbatim}
+
+			\item Para la zona por defecto, incluimos las precondiciones de que no sea un precipio porque no puedes
+			caminar por ellos, que no sea ni bosque ni agua porque para ellos están implementadas las otras opciones
+			que si es piedra, le cueste más energía mediante el uso de la cláusula \textit{when}:
+			\begin{verbatim}
+(:action ir
+   :parameters (?j - jugador ?origen ?destino - zona)
+   :precondition (and (at ?j ?origen)
+                      (> (energia ?j) 0)
+                      (or
+                         (conectada ?origen ?destino)
+                         (conectada ?destino ?origen)
+                      )
+                      (not (esbosque ?destino))
+                      (not (esagua ?destino))
+                      (not (esprecipicio ?destino))
+                 )
+   :effect (and (at ?j ?destino)
+                (not (at ?j ?origen))
+                (decrease (energia ?j) 1)
+                (when (espiedra ?destino) (decrease (energia ?j) 1))
+           )
+)
+			\end{verbatim}
+		\end{itemize}
+
+	\subsection{Incorporación de mochila}
+		Ahora disponemos de una mochila en la que podemos guardar un objeto, luego requiere de nuevos
+		predicados que almacenen la información pertinente: \verb|(mochilalibre ?j - jugador)|,
+		\verb|(enmochila ?o - objeto ?j - jugador)|
+		
+		También debemos incluir métodos similares a los que ya teníamos de coger y soltar objeto pero
+		para meter y sacar objetos de la mochila.
+		
+		El método para meter objetos sería:
+		\begin{verbatim}
+(:action cogermochila
+   :parameters (?o - objeto ?j - jugador)
+   :precondition (and (manolibre ?j)
+                      (enmochila ?o ?j)
+                 )
+   :effect (and (not (manolibre ?j))
+                (mochilalibre ?j)
+                (cogido ?o ?j )
+                (not (enmochila ?o ?j))
+           )
+)
+		\end{verbatim}
+		
+		Y su complementario sería:
+		\begin{verbatim}
+(:action dejarmochila
+   :parameters (?o - objeto ?j - jugador)
+   :precondition (and (cogido ?o ?j)
+                      (mochilalibre ?j)
+                 )
+   :effect (and (manolibre ?j)
+                (not (mochilalibre ?j))
+                (not (cogido ?o ?j))
+                (enmochila ?o ?j)
+          )
+)
+		\end{verbatim}
+		
 \end{document}
