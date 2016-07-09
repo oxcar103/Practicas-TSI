@@ -8,9 +8,7 @@
    )
 
    (:predicates
-         (at ?j - jugador ?z - zona)
-         (at ?p - personaje ?z - zona)
-         (at ?o - objeto ?z - zona)
+         (at ?x - (either jugador personaje objeto) ?z - zona)
          (conectada ?z1 - zona ?z2 - zona)
          (mochilalibre ?j - jugador)
          (manolibre ?j - jugador)
@@ -41,7 +39,7 @@
                             (conectada ?destino ?origen)
                          )
                          (not (esbosque ?destino))
-                         (not (esagua ?destion))
+                         (not (esagua ?destino))
                          (not (esprecipicio ?destino))
                     )
       :effect (and (at ?j ?destino)
@@ -133,7 +131,7 @@
                      )
        :effect (and (manolibre ?j)
                     (not (mochilalibre ?j))
-                    (not (cogido ?o ?j)))
+                    (not (cogido ?o ?j))
                     (enmochila ?o ?j)
                )
    )

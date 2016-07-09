@@ -1,5 +1,5 @@
 (define (problem BW-3)
-   (:domain BelkamWorld)
+   (:domain BelkanWorld)
 
    (:objects
       Oxcar103 - jugador
@@ -126,9 +126,9 @@
 
    (:goal (and (entregado Rosa Princesa)
                (entregado Algoritmo Principe)
-               (entregado Oscar objeto Bruja)
-               (entregado Oro objeto Profesor)
-               (entregado Oro objeto LeonardoDiCaprio)
+               (entregado Oscar Bruja)
+               (entregado Oro Profesor)
+               (entregado Oro LeonardoDiCaprio)
           )
    )
 )

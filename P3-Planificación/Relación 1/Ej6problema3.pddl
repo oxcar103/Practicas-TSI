@@ -1,5 +1,5 @@
 (define (problem BW-6_3)
-   (:domain BelkamWorld)
+   (:domain BelkanWorld)
 
    (:objects
       Oxcar103 - jugador

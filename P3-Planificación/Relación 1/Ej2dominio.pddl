@@ -8,9 +8,7 @@
    )
 
    (:predicates
-         (at ?j - jugador ?z - zona)
-         (at ?p - personaje ?z - zona)
-         (at ?o - objeto ?z - zona)
+         (at ?x - (either jugador personaje objeto) ?z - zona)
          (conectada ?z1 - zona ?z2 - zona)
          (libre ?j - jugador)
          (cogido ?o - objeto ?j - jugador)
