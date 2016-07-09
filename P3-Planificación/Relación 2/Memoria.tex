@@ -196,18 +196,52 @@ Entrega 2: Dominios y problemas de planificación HTN} % Subtitle
 
 \section{Dominio 2}
 	\subsection{Implementar \textit{(distancia ?x ?y ?d)} como predicado derivado}
-	Para hacer constar al planificador de la simetría en la distancia entre 2 ciudades cualesquiera,
-	elaboraremos un predicado derivado de \textit{distance ?x ?y}, utilizando para ello la cláusula
-	\textit{or} junto con \textit{bind ?d} para permitir la validación del predicado estando declarados
-	\textit{distance ?x ?y} o \textit{distance ?y ?x} pero no necesariamente ambos.
+		Para hacer constar al planificador de la simetría en la distancia entre dos ciudades
+		cualesquiera, elaboraremos un predicado derivado de \textit{distance ?x ?y}, utilizando para
+		ello la cláusula \textit{or} junto con \textit{bind ?d} para permitir la validación del predicado
+		estando declarados \textit{distance ?x ?y} o \textit{distance ?y ?x} pero no necesariamente ambos.
+		
+		Ahora, bastaría con sustituir las apariciones en el resto del código de \textit{distance ?x ?y}
+		por \textit{?d} y, dentro de una cláusula \textit{and} con las cláusulas que se han modificado,
+		el predicado recién creado \textit{distancia ?x ?y ?d}.
+		
+		\subsection{Modificar \textit{board} y \textit{debark} para permitir embarcar varios pasajeros}
+		Para regular el control sobre la capacidad de pasajeros que pueden estar a la vez en un avión,
+		podemos optar por:
+		\begin{itemize}
+			\item Hacer uso de dos nuevas funciones llamadas \textit{capacidad-avion ?a} que nos permite
+			conocer el número máximo de pasajeros que puede llevar un avión en cada viaje y, por tanto,
+			no se modificará a lo largo del programa, y otra función llamada \textit{uso-avion ?a} que
+			nos permite saber cuántos lleva en un momento dado en su interior.
+			
+			\item O bien(y ésta es la opción por la que he optado), tener una única función
+			\textit{free-seat} que controle en cada momento cuántos pasajeros más puede haber, impidiendo
+			embarcar a ningún pasajero cuando tome el valor de 0.
+		\end{itemize}
+		
+		En cualquiera de los dos casos, simplemente, bastaría modificar el dominio para que cada vez que
+		se llama la función de embarque se modifica la función correspondiente que lleva la cuenta y
+		análogamente cuando se desembarca, usando para ello las funciones de PDDL \textit{increase} y
+		\textit{decrease}.
 	
-	Ahora, bastaría con sustituir las apariciones en el resto del código de \textit{distance ?x ?y}
-	por \textit{?d} y, dentro de una cláusula \textit{and} con las cláusulas que se han modificado, el
-	predicado recién creado \textit{distancia ?x ?y ?d}.
-	
-	\subsection{Modificar \textit{board} y \textit{debark} para permitir embarcar varios pasajeros}
 	\subsection{Permitir embarcar varios pasajeros}
+		Para modificar realmente el comportamiento del planificador, tenemos que comprobar antes de mover
+		el avión de ciudad:
+		\begin{itemize}
+			\item Si hay pasajeros que quieran salir de la ciudad en la que está y quieran ir a la que va,
+			esto se realiza mediante el uso del predicado \textit{destino ?p - person ?c - city} que se
+			nos aporta como pista.
+			\item Si tiene asientos libres, para ello, se utilizarán las funciones descritas en el apartado
+			anterior.
+			\item El resto de comprobaciones que se hacían antes, como el combustible.
+		\end{itemize}
+		
+		Para dichas comprobaciones, será de utilidad el uso del comando \textit{forall} para recorrer las
+		distintas personas que haya en el problema.
+		
 	\subsection{Duración limitada del viaje}
-
+		Para el ajuste a la duración límite de los viajes, se añadirán a la tarea \textit{mover-avion} las
+		comprobaciones de que la duración del trayecto no sea superior al límite que se haya configurado en
+		el problema.
 
 \end{document}
