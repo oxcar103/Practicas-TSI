@@ -274,8 +274,11 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 		
 		La única acción afectada por este cambio será \verb|ir| que debe incluir la precondición que comprueba
 		la energía restante(\verb|(> (energia ?j) 0)|) y el efecto de ajustarla a su nuevo valor para futuras
-		acciones(\verb|(decrease (energia ?j) 1)|)
+		acciones(\verb|(decrease (energia ?j) 1)|).
 		
+	\subsection{Problema}
+		La implementación del problema fue idéntica con la excepción de la inicialización de la función de
+		energía al valor indicado:
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=15cm]{Problema2.jpg}
