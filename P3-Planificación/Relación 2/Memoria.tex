@@ -106,7 +106,11 @@ Entrega 2: Dominios y problemas de planificación HTN} % Subtitle
 % Resumen (Descomentar para usarlo)
 \renewcommand{\abstractname}{Resumen} % Uncomment to change the name of the abstract to something else
 \begin{abstract}
-	En esta práctica, hacemos cosas más nazis.
+	En esta práctica, nos plantean un sistema de planificación básico así como una serie de problemas
+	del mismo que debemos solventar. Para ello, se hace necesaria la elaboración de nuevos predicados,
+	métodos, funciones e incluso la modificación de las tareas primitivas ya conocidas. El propósito
+	de esta labor es obtener un sistema de planificación más robusto y consistente que dé solución a
+	una mayor gama de problemas que los que ya subsanaba.
 \end{abstract}
 
 % Índice
@@ -117,6 +121,84 @@ Entrega 2: Dominios y problemas de planificación HTN} % Subtitle
 
 %% Inicio del documento
 
-\section{Quiero sangre}
-	Voy a aparecer detrás de ti y te voy a dejar el cuerpo completamente seco e.e
+\section{Dominio 1}
+	\subsection{Problema 0}
+		Claramente, el fichero \textit{dominio1.pddl} resuelve satisfactoriamente el problema inicial:
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Ej1-Problema0.png}
+			\caption{Solución del problema 0.}
+			\label{Prob-0}
+		\end{figure}
+		
+	
+	\subsection{Problema 1}
+		El problema 1 consiste en transportar 3 personas inicialmente en distintas ciudades a una misma ciudad,
+		sin restricciones de fuel.
+		
+		Inicialmente, podemos ver que el dominio aportado como ejemplo considera algunos casos para la tarea
+		\textit{transport-person}, en concreto, registra los casos de que la persona ya se halle en la ciudad
+		destino y el de que no esté en la ciudad destino pero sí en la del avión. Por tanto, sólo tenemos
+		que implementar el caso de que no esté ni en la ciudad destino ni en la del avión, cuya solución sería
+		mover el avión a dicha ciudad y luego actuar como en el caso anterior como podemos ver en el fichero
+		\textit{dominio1.pddl}.
+		
+		Ahora, podemos comprobar que obtenemos un resultado para este problema:
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Ej1-Problema1.png}
+			\caption{Solución del problema 1.}
+			\label{Prob-1}
+		\end{figure}
+		
+	\subsection{Problema 2}
+		El problema 2 consiste en consiste en asumir ahora que hay restricciones de fuel.
+		
+		La solución de estas circunstancias pasan por modificar la tarea \textit{mover-avion} en la que ya tenemos
+		implementado el método que supone suficiente fuel y realizar la comprobación de que haya fuel antes de
+		realizar el vuelo, en caso de que no lo hubiese, sería necesario repostar previamente y después, volar.
+		
+		Como podemos ver, estas simples acciones nos permiten resolver el segundo problema planteado:
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Ej1-Problema2.png}
+			\caption{Solución del problema 2.}
+			\label{Prob-2}
+		\end{figure}
+		
+	\subsection{Problema 3}
+		El problema 3 consiste en considerar acciones de vuelo lento y rápido para tratar de transportar las
+		personas lo más rápido posible sin exceder el límite de fuel.
+		
+		En esta ocasión, tenemos que plantear la bifurcación entre optar por volar a baja velocidad para
+		conservar el máximo combustible posible, ya sea por falta de capacidad en el depósito o por evitar
+		exceder el límite de fuel total impuesto.
+		
+		Simplemente, debemos añadir los predicados de \textit{hay-fuel-fast} en contraposición con
+		\textit{hay-fuel-slow} que nos permite conocer si tenemos suficiente combustible en el depósito
+		para realizar un vuelo rápido o lento, respectivamente. Junto con \textit{suficiente-fuel-fast} y
+		\textit{suficiente-fuel-slow} para controlar no excedernos en el límite total de fuel consumido tras
+		el viaje que estamos planeando hacer.
+		
+		Una vez definidos estos predicados derivados a partir de operaciones simples de suma, producto y
+		comparación como podemos ver en el dominio, jugaremos con ellos para elegir entre los métodos de
+		\textit{vuela-rapido}, \textit{vuela-lento} o incluso saber si es necesario repostar antes de
+		\textit{vuela-rapido}.
+		
+		Finalmente, tras la implementación de estos métodos, podemos concluir que hemos resuelto los 3
+		problemas que tenía el problema inicial como podemos verificar:
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=15cm]{Ej1-Problema3.png}
+			\caption{Solución del problema 3.}
+			\label{Prob-3}
+		\end{figure}
+
+\section{Dominio 2}
+	\subsection{Implementar \textit{(distancia ?x ?y ?d)} como predicado derivado}
+	\subsection{Modificar \textit{board} y \textit{debark} para permitir embarcar varios pasajeros}
+	\subsection{Permitir embarcar varios pasajeros}
+	\subsection{Duración limitada del viaje}
+
+
 \end{document}
