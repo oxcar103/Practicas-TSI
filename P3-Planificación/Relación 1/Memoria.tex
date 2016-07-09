@@ -269,6 +269,13 @@ Entrega 1: Dominios y problemas de planificación clásica en PDDL} % Subtitle
 		
 \section{Consumo de energía}
 	\subsection{Implementación}
+		Para el control de la energía que le queda, haremos uso de la función \verb|(energia ?j - jugador)|
+		inicializada a un cierto valor en el problema(en nuestro caso, será de 103, como cabría esperar).
+		
+		La única acción afectada por este cambio será \verb|ir| que debe incluir la precondición que comprueba
+		la energía restante(\verb|(> (energia ?j) 0)|) y el efecto de ajustarla a su nuevo valor para futuras
+		acciones(\verb|(decrease (energia ?j) 1)|)
+		
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=15cm]{Problema2.jpg}
