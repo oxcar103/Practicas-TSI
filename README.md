@@ -1,4 +1,4 @@
-Prácticas ROS  
+Prácticas TSI  
 ========================
 
 Prácticas de la asignatura Técnicas de los Sistemas Inteligentes (TSI).  
