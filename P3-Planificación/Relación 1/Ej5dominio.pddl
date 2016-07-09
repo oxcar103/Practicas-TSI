@@ -27,8 +27,8 @@
          (energia ?j - jugador)
          (puntos ?j - jugador)
          (puntosentrega ?o - objeto ?p - personaje)
-      (capacidadmochila ?j - jugador)
-      (usomochila ?j - jugador)
+         (capacidadmochila ?j - jugador)
+         (usomochila ?j - jugador)
    )
 
    (:action ir
