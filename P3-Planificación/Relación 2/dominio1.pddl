@@ -71,7 +71,7 @@
          :precondition (and (at ?p - person ?c1 - city)
                             (at ?a - aircraft ?c1 - city)
                         )
-         :tasks ( 
+         :tasks (
                  (board ?p ?a ?c1)
                  (mover-avion ?a ?c1 ?c)
                  (debark ?p ?a ?c )
