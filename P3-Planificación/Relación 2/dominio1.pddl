@@ -51,7 +51,6 @@
          (different ?x ?y) (not (igual ?x ?y))
    )
 
-
    ;; este literal derivado se utiliza para deducir, a partir de la información en el estado actual, 
    ;; si hay fuel suficiente para que el avión ?a vuele de la ciudad ?c1 a la ?c2
    ;; el antecedente de este literal derivado comprueba si el fuel actual de ?a es mayor que 1.
@@ -72,9 +71,6 @@
          (suficiente-fuel-fast ?a - aircraft ?c1 - city ?c2 - city)
          (< (+ (total-fuel-used) (* (distance ?c1 ?c2) (fast-burn ?a))) (fuel-limit))
    )
-
-
-
 
    (:derived
          (suficiente-fuel-slow ?a - aircraft ?c1 - city ?c2 - city)
